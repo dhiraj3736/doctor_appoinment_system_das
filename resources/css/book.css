@@ -1,0 +1,12 @@
+
+.vertical-menu {
+    background-color: transparent !important;
+}
+
+    .vertical-menu a {
+        color: #000; /* Set text color */
+    }
+    .vertical-menu a.active {
+        color: #fff; /* Set text color for active link */
+        background-color: #ccd2d8; /* Set background color for active link */
+    }
