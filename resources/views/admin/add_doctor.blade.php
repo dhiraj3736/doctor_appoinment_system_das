@@ -10,51 +10,66 @@
             <!-- /.card-header -->
             <!-- form start -->
             @if(isset($edit))
-    <!-- Editing existing service -->
-    <form action="/edit_doctor/{{$edit->d_id}}"  enctype="multipart/form-data" method="post">
-        @else
-        <!-- Adding new service -->
-        <form action="/add_doctor"  enctype="multipart/form-data" method="post">
-            @endif
-          
-                @csrf
-                <div class="card-body">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" name="name" value="{{isset($edit) ? $edit->name : old('name')}}" class="form-control" id="">
-                    </div>
-                    <div class="form-group">
-                        <label for="name">NMC No.</label>
-                        <input type="text" name="nmc" value="{{isset($edit) ? $edit->nmc_no : old('nmc')}}" class="form-control" id="">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampl">Specialist</label>
-                        <input type="text" name="spec" value="{{isset($edit) ? $edit->specialist : old('spec')}}" class="form-control" id="">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampl">Qualification</label>
-                        <input type="text" name="qual" value="{{isset($edit) ? $edit->qualification : old('qual')}}" class="form-control" id="">
-                    </div>
+            <!-- Editing existing service -->
+            <form action="/edit_doctor/{{$edit->d_id}}" enctype="multipart/form-data" method="post">
+                @else
+                <!-- Adding new service -->
+                <form action="/add_doctor" enctype="multipart/form-data" method="post">
+                    @endif
 
-                    <div class="form-group">
-                        <label for="exampl">Experience</label>
-                        <input type="text" name="expe" value="{{isset($edit) ? $edit->nmc_no : old('nmc')}}" class="form-control" id="">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputFile">File input</label>
-                        <div class="input-group">
-                            <div class="custom-file">
-                                <input type="file" name="image"class="custom-file-input" id="exampleInputFile">
+                    @csrf
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" value="{{isset($edit) ? $edit->name : old('name')}}" class="form-control" id="">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">NMC No.</label>
+                            <input type="text" name="nmc" value="{{isset($edit) ? $edit->nmc_no : old('nmc')}}" class="form-control" id="">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampl">Specialist</label>
+                            <input type="text" name="spec" value="{{isset($edit) ? $edit->specialist : old('spec')}}" class="form-control" id="">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampl">Qualification</label>
+                            <input type="text" name="qual" value="{{isset($edit) ? $edit->qualification : old('qual')}}" class="form-control" id="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampl">Experience</label>
+                            <input type="text" name="expe" value="{{isset($edit) ? $edit->nmc_no : old('nmc')}}" class="form-control" id="">
+                        </div><br>
+
+                        <div class="form-group row">
+                            <label for="fromTime" class="col-sm-2 col-form-label">From:</label>
+                            <div class="col-sm-4">
+                                <input type="time" class="form-control" id="fromTime" name="fromtime">
+                            </div>
+                            <label for="toTime" class="col-sm-2 col-form-label">To:</label>
+                            <div class="col-sm-4">
+                                <input type="time" class="form-control" id="toTime" name="totime">
                             </div>
                         </div>
-                    </div>
-                </div>
-                <!-- /.card-body -->
+                        <div class="form-group">
+                            <label for="exampleInputFile">File input</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" name="image" class="custom-file-input" id="exampleInputFile">
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
+
+
+
+                    </div>
+                    <!-- /.card-body -->
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
         </div>
     </div>
 </div>
@@ -91,6 +106,11 @@
             </div>
         </div>
     </div>
+    <div class="container mt-4">
+    <div class="d-flex justify-content-center">
+        {{ $doctors->links() }}
+    </div>
+</div>
 </div>
 
 

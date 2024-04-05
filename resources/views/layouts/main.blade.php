@@ -3,4 +3,5 @@
     @yield('main-section')
 </div>
 
+
 @include('layouts.footer')

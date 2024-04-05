@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\model_admin;
 use App\Models\model_doctor;
 use Illuminate\Http\Request;
 
@@ -35,6 +36,9 @@ class doctor_controller extends Controller
 
             $input->qualification = $request->input('qual');
             $input->experiance = $request->input('expe');
+            $input->fromtime=$request->input('fromtime');
+            $input->totime=$request->input('totime');
+
             $input->image = $filename;
             $input->save();
     
@@ -48,16 +52,26 @@ class doctor_controller extends Controller
     
 
          public function retrive_doctor_info(){
+            $notification=session('a_id');
+
+            $noti = model_admin::find($notification); 
+
+            $doctors=model_doctor::orderBy('d_id','desc')->paginate(6);
+            $data=compact('doctors','noti');
+            return view('admin/add_doctor')->with($data);
+         }
+
+         public function retrive_doctor_info_for_doctor_dashboard(){
             $doctors=model_doctor::all();
             $data=compact('doctors');
-            return view('admin/add_doctor')->with($data);
+            return view('register')->with($data);
          }
 
          public function edit_doctor($d_id){
             $doctors=model_doctor::all();
             $edit=model_doctor::find($d_id);
-
-            $data=compact('doctors','edit');
+            $noti = model_admin::find(1); 
+            $data=compact('doctors','edit','noti');
             return view('admin/add_doctor')->with($data);
          }
 
@@ -73,6 +87,8 @@ class doctor_controller extends Controller
             $doctor->specialist = $request['spec'];
             $doctor->qualification = $request['qual'];
             $doctor->experiance = $request['expe'];
+            $doctor->fromtime=$request['fromtime'];
+            $doctor->totime=$request['totime'];
             
             $doctor->save();
         
@@ -85,5 +101,22 @@ class doctor_controller extends Controller
             $doc=model_doctor::find($d_id)->delete();
             return redirect()->back();
 
+         }
+
+
+         public function getDoctorTime(Request $request, $doctorname)
+         {
+             // Find the doctor by name
+             $doctor = model_doctor::where('name', $doctorname)->first();
+     
+             if (!$doctor) {
+                 return response()->json(['error' => 'Doctor not found'], 404);
+             }
+     
+             // Return the doctor's available time as JSON response
+             return response()->json([
+                 'fromtime' => $doctor->fromtime,
+                 'totime' => $doctor->totime,
+             ]);
          }
 }

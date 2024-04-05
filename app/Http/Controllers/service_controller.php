@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\model_admin;
 use App\Models\model_service;
 use Illuminate\Http\Request;
 
@@ -21,14 +22,21 @@ public function insert_service(Request $request){
 
 }
 public function select_service(){
+    $notification=session('a_id');
+
     $service = model_service::all();
-    return view('admin/add_services', compact('service'));
+    $noti = model_admin::find($notification); 
+
+    return view('admin/add_services', compact('service','noti'));
 }
 
 public function edit_service($s_id){
+    $notification=session('a_id');
+
     $service = model_service::all();
     $edit = model_service::find($s_id);
-    return view('admin/add_services', compact('service', 'edit'));
+    $noti = model_admin::find($notification); 
+    return view('admin/add_services', compact('service', 'edit','noti'));
 }
 
 public function update_service(Request $reque,$s_id){

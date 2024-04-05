@@ -41,9 +41,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($select_data as $row)
+                            @foreach($select_data as $key=> $row)
                             <tr>
-                                <td>{{$row->b_id}}</td>
+                                <td>{{($select_data->currentPage()-1) * $select_data->perPage() + $key +1}}</td>
                                 <td>{{$row->name}}</td>
                                 <td>{{$row->gender}}</td>
                                 <td>{{$row->date}}</td>
@@ -70,6 +70,11 @@
 
                         </tbody>
                     </table>
+                    <div class="container mt-4">
+    <div class="d-flex justify-content-center">
+        {{ $select_data->links() }}
+    </div>
+</div>
                 </div>
             </div>
         </div>

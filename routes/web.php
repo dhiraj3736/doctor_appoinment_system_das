@@ -3,9 +3,12 @@
 use App\Http\Controllers\admin_controller;
 use App\Http\Controllers\book_controller;
 use App\Http\Controllers\doctor_controller;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\register_controller;
 use App\Http\Controllers\signup_controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\service_controller;
+use App\Http\Controllers\vendor_controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,113 +38,183 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/dashboard', function () {
-   
+
 
     return view('dashboard');
 });
 
-Route::get('/signup',[signup_controller::class,'run_signup']);
-Route::post('/signup',[signup_controller::class,'insert']);
+Route::get('/signup', [signup_controller::class, 'run_signup']);
+Route::post('/signup', [signup_controller::class, 'insert']);
 
-Route::get('/login',[signup_controller::class,'run_login']);
-Route::post('/login',[signup_controller::class,'login'])->name('login');
+Route::get('verify/{token}', [signup_controller::class, 'verify']);
+
+
+Route::get('/login', [signup_controller::class, 'run_login']);
+Route::post('/login', [signup_controller::class, 'login'])->name('login');
 
 Route::get('/logout', function () {
     session()->flush(); // Destroy the entire session
     return redirect('login');
 });
+Route::middleware(['web'])->group(function () {
+
+    Route::get('/userdashboard', [signup_controller::class, 'main']);
+
+    Route::get('/userdashboard', [signup_controller::class, 'get_notification']);
 
 
-Route::get('/userdashboard',[signup_controller::class,'main']);
+    Route::get('/book', [book_controller::class, 'run']);
+    Route::post('/book', [book_controller::class, 'insert']);
+
+    Route::get('/book', [book_controller::class, 'retrive_service']);
+
+    // route::get('view_appoinment',function(){
+    //     return view('view_appoinment');
+    // });
+    route::get('view_appoinment', [book_controller::class, 'select']);
+    route::get('/delete/{id}', [book_controller::class, 'delete']);
+    route::get('/edit/{id}', [book_controller::class, 'edit']);
+    route::post('/edit/{id}', [book_controller::class, 'update']);
 
 
-Route::get('/book',[book_controller::class,'run']);
-Route::post('/book',[book_controller::class,'insert']);
+    // Route for displaying the user profile
+    Route::get('/user_profile', [Signup_Controller::class, 'run_profile'])->name('user_profile');
 
-Route::get('/book',[book_controller::class,'retrive_service']);
+    // Route for uploading profile picture
+    Route::post('/user_profile', [Signup_Controller::class, 'add_profile_picture'])->name('upload_profile_picture');
 
-// route::get('view_appoinment',function(){
-//     return view('view_appoinment');
-// });
-route::get('view_appoinment',[book_controller::class,'select']);
-route::get('/delete/{id}',[book_controller::class,'delete']);
-route::get('/edit/{id}',[book_controller::class,'edit']);
-route::post('/edit/{id}',[book_controller::class,'update']);
+    // Route for editing user profile information
 
+    Route::post('/user_profile/edit_profile', [Signup_Controller::class, 'edit_profile'])->name('edit_profile');
 
+    route::post('/user_profile/change_password',[signup_controller::class,'change_password']);
 
-// end user part
-
-
-
-
-
-// admin part
-route::get('/admin_dashboard',[admin_controller::class,'run_admin_dashboard']);
-route::get('/view_user',[admin_controller::class,'run_view_user']);
-
-route::get('/view_user',[admin_controller::class,'select_for_user']);
-
-route::get('/admin_dashboard',[admin_controller::class,'select_for_dashboard']);
-
-
-
-route::get('/admin_view_appoinment',[admin_controller::class,'run_appoinment']);
-
-route::get('/admin_view_appoinment',[admin_controller::class,'select_appoinment']);
-route::get('status/{b_id}',[admin_controller::class,'status']);
-route::get('remove/{u_id}',[admin_controller::class,'remove_user']);
+    Route::match(['get', 'post'], '/notifications/mark-as-read/{notification}',[NotificationController::class,'markAsRead'])->name('notifications.markAsRead');
 
 
 
 
-route::get('/add_service',[service_controller::class,'run_add_service']);
-
-route::post('/add_service',[service_controller::class,'insert_service']);
-
-
-route::get('/add_service',[service_controller::class,'select_service']);
-
-route::get('/delete_service/{s_id}',[service_controller::class,'delete_service']);
-
-route::get('/edit_service/{s_id}',[service_controller::class,'edit_service']);
-
-route::post('/edit_service/{s_id}',[service_controller::class,'update_service']);
-
-
-
-
-route::get('/view_service',[book_controller::class,'run_service']);
-
-route::get('/view_service',[book_controller::class,'view_service']);
-
-
-
-route::get('/add_doctor',[doctor_controller::class,'run_doctor']);
-route::post('/add_doctor',[doctor_controller::class,'insert_doctor_info']);
-route::get('/add_doctor',[doctor_controller::class,'retrive_doctor_info']);
-
-route::get('/delete_doctor/{d_id}',[doctor_controller::class,'delete_doctor']);
-
-route::get('/edit_doctor/{d_id}',[doctor_controller::class,'edit_doctor']);
-route::post('/edit_doctor/{d_id}',[doctor_controller::class,'update_doctor']);
-
-
-
-route::get('/view_doctor',[book_controller::class,'run_doctor']);
-
-route::get('/view_doctor',[book_controller::class,'retrive_doctor_info']);
+    // end user part
 
 
 
 
 
+    // admin part
+
+    route::get('/admin_login', [admin_controller::class, 'admin_login_page']);
+    route::post('/admin_login', [admin_controller::class, 'admin_login']);
+
+    route::get('/admin_dashboard', [admin_controller::class, 'run_admin_dashboard']);
+    route::get('/view_user', [admin_controller::class, 'run_view_user']);
+
+    route::get('/view_user', [admin_controller::class, 'select_for_user']);
+
+    route::get('/admin_dashboard', [admin_controller::class, 'select_for_dashboard']);
+
+
+
+
+    route::get('/admin_view_appoinment', [admin_controller::class, 'run_appoinment']);
+
+    route::get('/admin_view_appoinment', [admin_controller::class, 'select_appoinment']);
+    route::get('status/{b_id}', [admin_controller::class, 'status']);
+    route::get('remove/{u_id}', [admin_controller::class, 'remove_user']);
+
+
+
+
+    route::get('/add_service', [service_controller::class, 'run_add_service']);
+
+    route::post('/add_service', [service_controller::class, 'insert_service']);
+
+
+    route::get('/add_service', [service_controller::class, 'select_service']);
+
+    route::get('/delete_service/{s_id}', [service_controller::class, 'delete_service']);
+
+    route::get('/edit_service/{s_id}', [service_controller::class, 'edit_service']);
+
+    route::post('/edit_service/{s_id}', [service_controller::class, 'update_service']);
+
+
+
+
+    route::get('/view_service', [book_controller::class, 'run_service']);
+
+    route::get('/view_service', [book_controller::class, 'view_service']);
+
+
+
+    route::get('/add_doctor', [doctor_controller::class, 'run_doctor']);
+    route::post('/add_doctor', [doctor_controller::class, 'insert_doctor_info']);
+    route::get('/add_doctor', [doctor_controller::class, 'retrive_doctor_info']);
+
+    route::get('/delete_doctor/{d_id}', [doctor_controller::class, 'delete_doctor']);
+
+    route::get('/edit_doctor/{d_id}', [doctor_controller::class, 'edit_doctor']);
+    route::post('/edit_doctor/{d_id}', [doctor_controller::class, 'update_doctor']);
+
+
+
+    route::get('/view_doctor', [book_controller::class, 'run_doctor']);
+
+
+    route::get('/view_doctor', [book_controller::class, 'retrive_doctor_info']);
+    Route::get('/logout_admin', function () {
+        session()->flush(); // Destroy the entire session
+        return redirect('admin_login');
+    });
+
+
+
+    // vendor   doctor
+
+
+
+
+    route::get('/main_dashboard', [register_controller::class, 'run_main_dashboard']);
+    route::get('/register', [register_controller::class, 'run_register']);
+
+    route::post('/register', [register_controller::class, 'insert_register_info']);
+
+    route::post('/doctor_login', [register_controller::class, 'doctor_login']);
+
+    route::get('/doctor_dashboard', [vendor_controller::class, 'doctor_dashboard']);
+
+    Route::get('/logout_doctor', function () {
+        session()->flush(); // Destroy the entire session
+        return redirect('register');
+    });
+
+    route::get('/register', [doctor_controller::class, 'retrive_doctor_info_for_doctor_dashboard']);
+
+
+    route::get('/view_d_appoinment', [vendor_controller::class, 'view_d_appoinment']);
+    route::get('/view_d_appoinment', [vendor_controller::class, 'select_appoinment']);
+    route::get('/view_my_appoinment', [vendor_controller::class, 'view_my_appoinment']);
+    route::get('/view_my_appoinment', [vendor_controller::class, 'select_my_appoinment']);
+
+
+    route::get('/view_d_user', [vendor_controller::class, 'view_user']);
+    route::get('/view_d_user', [vendor_controller::class, 'select_user']);
+    route::get('/doctor_dashboard', [vendor_controller::class, 'get_notification']);
+
+    route::post('/send_report', [vendor_controller::class, 'send_report']);
 
 
 
 
 
 
+    Route::get('/get_doctor_time/{doctorname}', [doctor_controller::class, 'getDoctorTime'])->name('getdoctortime');
 
 
+    route::get('/doctorprofile',[vendor_controller::class,'run_doctor_profile']);
+    route::get('/doctorprofile',[vendor_controller::class,'send_doctor_info']);
+    route::post('/doctorprofile/photo',[vendor_controller::class,'add_profile_picture']);
 
+    route::post('/doctorprofile/edit',[vendor_controller::class,'edit_doctor_info']);
+    route::post('/doctorprofile/change_password',[vendor_controller::class,'change_password']);
+
+});

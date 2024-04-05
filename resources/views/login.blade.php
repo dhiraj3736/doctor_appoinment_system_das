@@ -9,7 +9,7 @@
     <style>
         body {
             background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-                url("{{ asset('/images/3.jpg') }}");
+            url("{{ asset('/images/3.jpg') }}");
             background-size: cover;
         }
 
@@ -24,7 +24,7 @@
 
         #border {
             width: 300px;
-            height: 250px;
+            height: auto;
             border: 1px solid black;
             margin: auto;
             position: relative;
@@ -36,18 +36,20 @@
         .textbox {
             width: 200px;
             height: 30px;
-            margin: 0 auto; /* Center horizontally */
+            margin: 0 auto;
+            /* Center horizontally */
             display: block;
             border-radius: 20px;
         }
 
         .form {
             margin-top: 150px;
-            text-align: center; /* Center the form horizontally */
+            text-align: center;
+            /* Center the form horizontally */
         }
-      
     </style>
 </head>
+
 <body>
     <div class="card-header bg-transparent">
         <ul class="nav nav-pills card-header-pills justify-content-center">
@@ -62,26 +64,32 @@
             </li>
         </ul>
     </div>
-    
+    @if(session('message'))
+    <span class="alert alert-success">
+        {{ session('message') }}
+    </span>
+    @endif
+
     <form method="post" name="adminloginform" class="form" action="{{ route('login') }}">
         @csrf
         <div id="border">
             <h1>User Login</h1>
             @if(Session::has('error'))
-        <p class="text-danger">{{ Session::get('error') }}</p>
-    @endif
-    @if(Session::has('success'))
-        <p class="text-success">{{ Session::get('success') }}</p>
-    @endif
+            <p class="text-danger" style="color:red;">{{ Session::get('error') }}</p>
+            @endif
+            @if(Session::has('success'))
+            <p class="text-success">{{ Session::get('success') }}</p>
+            @endif
             <label>Email:</label>
             <input type="email" name="email" class="textbox">
-            <span>@error('email') {{ $message }} @enderror</span><br>
+            <span style="color:red;">@error('email') {{ $message }} @enderror</span><br>
             <label>Password:</label>
             <input type="password" name="password" class="textbox" />
-            <span>@error('password') {{ $message }} @enderror</span>
+            <span style="color:red;">@error('password') {{ $message }} @enderror</span><br>
             <input type="submit" class="btn btn-primary" value="Submit">
         </div>
     </form>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
+
 </html>

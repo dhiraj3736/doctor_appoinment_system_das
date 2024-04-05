@@ -103,9 +103,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($user as $row)
+                                @foreach($user as $key=> $row)
                                 <tr>
-                                    <td>{{$row->u_id}}</td>
+                                    <td>{{ $key + 1 }}</td>
                                     <td>{{$row->fullname}}</td>
                                     <td>{{$row->gender}}</td>
                                     <td>{{$row->username}}</td>
@@ -118,9 +118,15 @@
 
                                 @endforeach
 
+
                             </tbody>
+
                         </table>
+                       
+
                     </div>
+                    <a class="dropdown-item d-flex align-items-center" href="{{url('/view_user')}}"><i data-feather="eye" class="icon-sm me-2"></i> <span class="">View More</span></a>
+
                 </div>
             </div>
         </div>
@@ -207,9 +213,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($book as $row)
+                                    @foreach($book as $key => $row)
                                     <tr>
-                                        <td>{{$row->b_id}}</td>
+                                        <td>{{ $key +1 }}</td>
                                         <td>{{$row->name}}</td>
                                         <td>{{$row->gender}}</td>
                                         <td>{{$row->date}}</td>
@@ -228,7 +234,10 @@
 
                                 </tbody>
                             </table>
+                         
                         </div>
+                        <a class="dropdown-item d-flex align-items-center" href="{{url('/admin_view_appoinment')}}"><i data-feather="eye" class="icon-sm me-2"></i> <span class="">View More</span></a>
+
                     </div>
                 </div>
             </div>
@@ -278,6 +287,7 @@
                             @endforeach
                             <!-- Add more cards here if needed -->
                         </div>
+                        <a class="dropdown-item d-flex align-items-center" href="/add_doctor"><i data-feather="eye" class="icon-sm me-2"></i> <span class="">View More</span></a>
 
 
                     </div>
@@ -305,15 +315,16 @@
                         <div class="row" style="margin-top: 2px;">
                             @foreach($service as $row)
                             <div class="card" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title">{{$row->service}}</h5>
-    <p class="card-text">{{$row->discription}}</p>
-  
-  </div>
-</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{$row->service}}</h5>
+                                    <p class="card-text">{{$row->discription}}</p>
+
+                                </div>
+                            </div>
                             @endforeach
                             <!-- Add more cards here if needed -->
                         </div>
+                        <a class="dropdown-item d-flex align-items-center" href="/add_service"><i data-feather="eye" class="icon-sm me-2"></i> <span class="">View More</span></a>
 
 
                     </div>
