@@ -62,25 +62,45 @@ public function admin_login(Request $request){
         return view('admin/view_user');
     }
 
-    public function select_for_user(){
+    public function select_for_user(Request $request){
         $notification=session('a_id');
+        //search
+        $search=$request['search'] ?? ""; 
+        if($search !== ""){
+            $select_data=model_signup::where('fullname','LIKE',"%$search%")->orwhere('username','LIKE',"%$search%")->paginate(7); 
 
-        $select_data = model_signup::orderBy('u_id', 'desc')->paginate(7);
-                $noti = model_admin::find($notification); 
+        }
+        //normal
+        else{
+            $select_data = model_signup::orderBy('u_id', 'desc')->paginate(7);
+        }
 
-        $data=compact('select_data','noti');
+        
+         $noti = model_admin::find($notification); 
+
+        $data=compact('select_data','noti','search');
         return view('admin/view_user')->with($data);
        
 
     }
-    public function select_for_dashboard(){
+    public function select_for_dashboard(Request $request){
         $notification=session('a_id');
-
-        $user = model_signup::orderBy('u_id', 'desc')->take(4)->get();
-
-        $book=model_book::orderBy('b_id', 'desc')->take(4)->get();
-        $doctors=model_doctor::orderBy('d_id','desc')->take(3)->get();
-        $service = model_service::orderBy('s_id','desc')->take(3)->get();
+        $search=$request['search'] ?? "";
+            //search
+        if($search!==""){
+            $user = model_signup::where('fullname','LIKE',"%$search%")->orwhere('username','LIKE',"%$search%")->get(); 
+            $book=model_book::where('name','LIKE',"%$search%")->get(); 
+            $doctors=model_doctor::where('name','LIKE',"%$search%")->get(); 
+            $service = model_service::where('service','LIKE',"%$search%")->get(); 
+        }
+        //normal
+        else{
+            $user = model_signup::orderBy('u_id', 'desc')->take(4)->get();
+            $book=model_book::orderBy('b_id', 'desc')->take(4)->get();
+           $doctors=model_doctor::orderBy('d_id','desc')->take(3)->get();
+           $service = model_service::orderBy('s_id','desc')->take(3)->get();
+        }
+       
         $noti = model_admin::find($notification); 
 
 
@@ -95,10 +115,17 @@ public function admin_login(Request $request){
     }
 
 
-    public function select_appoinment(){
+    public function select_appoinment(Request $request){
         $notification=session('a_id');
-        $select_data=model_book::orderBy('b_id', 'desc')->paginate(7);
-        $doctors=model_doctor::all();
+        $search=$request['search'] ?? "";
+        //search
+        if($search!==""){
+            $select_data=model_book::where('name','LIKE',"%$search%")->paginate(7); 
+        }else{
+            $select_data=model_book::orderBy('b_id', 'desc')->paginate(7);
+
+        }
+        
         $noti = model_admin::find($notification); 
 
 

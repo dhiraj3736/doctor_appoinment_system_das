@@ -1,34 +1,45 @@
+
+
+
 @extends('layouts.main')
 
 @section('main-section')
 <div class="container">
     <div class="row justify-content-center">
         @if(session('message'))
-        <span class="alert alert-success">
+        <div class="alert alert-success" role="alert">
             {{ session('message') }}
-        </span>
-        @endif
+        </div>
+        @endif  
         <div class="col-md-6">
-
             <h1 class="display-4" style="color: white; font-size:30px;">{{$title}}</h1>
-
             <form action="{{$url}}" method="post" style="width:550px; color:white;">
                 @csrf
-                <div class="container" style="background-image:url(./images/3.jpg)">
-                    <label><b>Name:</b></label><br>
-                    <input type="text" class="form-control" placeholder="Enter Full name of patient" value="{{isset($select_item) ? $select_item->name : old('fname')}}" name="fname">
-                    <span style="color:red;">
-                        @error('fname')
-                        {{$message}}
-                        @enderror
-                    </span><br>
-                    <div class="mb-3">Gender
-
-                        <input type="radio" name="gender" value="female" {{ isset($select_item) ? ($select_item->gender == "female" ? "checked" : "") : (old('gender') == "female" ? "checked" : "") }}"> female
-
-                        <input type="radio" name="gender" value="male" {{ isset($select_item) ? ($select_item->gender == "male" ? "checked" : "") : (old('gender') == "male" ? "checked" : "") }}> male
-                        <input type="radio" name="gender" value="other" {{ isset($select_item) ? ($select_item->gender == "other" ? "checked" : "") : (old('gender') == "other" ? "checked" : "") }}> other <br>
-                        <span style="color:red;">
+                <div class="container" style="background-image:url(./images/3.jpg); padding: 20px; border-radius: 10px;">
+                    <div class="mb-3">
+                        <label for="fname" class="form-label"><b>Name:</b></label>
+                        <input type="text" class="form-control" id="fname" placeholder="Enter Full name of patient" value="{{isset($select_item) ? $select_item->name : old('fname')}}" name="fname">
+                        <span class="text-danger">
+                            @error('fname')
+                            {{$message}}
+                            @enderror
+                        </span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gender" class="form-label"><b>Gender:</b></label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="female" value="female" {{ isset($select_item) ? ($select_item->gender == "female" ? "checked" : "") : (old('gender') == "female" ? "checked" : "") }}>
+                            <label class="form-check-label" for="female">Female</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="male" value="male" {{ isset($select_item) ? ($select_item->gender == "male" ? "checked" : "") : (old('gender') == "male" ? "checked" : "") }}>
+                            <label class="form-check-label" for="male">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="other" value="other" {{ isset($select_item) ? ($select_item->gender == "other" ? "checked" : "") : (old('gender') == "other" ? "checked" : "") }}>
+                            <label class="form-check-label" for="other">Other</label>
+                        </div>
+                        <span class="text-danger">
                             @error('gender')
                             {{$message}}
                             @enderror
@@ -77,6 +88,8 @@
 
                     <label for="">Doctor</label>
                     <select name="doctor" class="form-control" id="doctor">
+                    <option value="">please choose doctor</option>
+
                         @foreach($doctor as $row)
                         <option value="{{ $row->name }}" {{ (isset($select_item) && $select_item->name == $row->name) || old('doctor') == $row->name ? 'selected' : '' }}>
                             {{ $row->name }}
@@ -113,9 +126,9 @@
                         {{$message}}
                         @enderror
                     </span><br>
-                    <div class="container1">
-                        <input type="submit" name="submit" value="Submit" class="btn btn-primary">
-                    </div>
+                    
+                    <!-- Other form fields... -->
+                    <input type="submit" name="submit" value="Submit" class="btn btn-primary">
                 </div>
             </form>
         </div>

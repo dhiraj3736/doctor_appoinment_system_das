@@ -19,14 +19,23 @@
             background-attachment: fixed;
         }
 
-        .nav-link {
-            color: white;
-            font-size: 18px;
-            padding: 15px 20px;
-            margin-left: 12px;
-            transition: all 0.3s ease;
-            text-decoration: none; /* Remove underline */
-        }
+        .navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #333;
+  z-index: 1000;
+}
+
+.navbar .nav-link {
+  color: white;
+  font-size: 18px;
+  padding: 15px 20px;
+  margin-left: 12px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
 
         .nav-link:hover {
             color: #ffc107;
@@ -63,6 +72,9 @@
         }
         .dropdown-item:hover a {
     color: #ffc107 !important;
+}
+.container{
+    padding: 50px;
 }
 
 

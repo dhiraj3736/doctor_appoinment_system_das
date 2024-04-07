@@ -51,12 +51,18 @@ class doctor_controller extends Controller
     }
     
 
-         public function retrive_doctor_info(){
+         public function retrive_doctor_info(Request $request){
             $notification=session('a_id');
+            $search=$request['search']?? "";
 
+            if($search!==""){
+                $doctors=model_doctor::where('name','LIKE',"%$search%")->paginate(6);
+            }else{
+                $doctors=model_doctor::orderBy('d_id','desc')->paginate(6);
+            }
             $noti = model_admin::find($notification); 
 
-            $doctors=model_doctor::orderBy('d_id','desc')->paginate(6);
+           
             $data=compact('doctors','noti');
             return view('admin/add_doctor')->with($data);
          }

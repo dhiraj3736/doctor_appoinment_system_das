@@ -44,9 +44,12 @@
                         <span class="badge bg-secondary">Unknown</span>
                         @endif
                     </td>
+                   
                     <td>
+                    @if($row->status == 0)
                         <a href="/delete/{{$row->b_id}}" class="badge bg-danger">Delete</a>
                         <a href="/edit/{{$row->b_id}}" class="badge bg-success">Edit</a>
+                        @endif
                     </td>
                 </tr>
                 @endforeach

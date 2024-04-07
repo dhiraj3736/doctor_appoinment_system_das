@@ -16,11 +16,17 @@ class vendor_controller extends Controller
         return view('Doctor/view_d_appoinment');
     }
     
-    public function select_appoinment(){
+    public function select_appoinment(Request $request){
         $v_id=session('v_id');
+        $search=$request['search'] ?? "";
+        if($search!==""){
+            $select_item=model_book::where('name','LIKE',"%$search%")->paginate(7);
+        }else{
+            $select_item=model_book::orderBy('b_id','desc')->paginate(7);
+
+        }
         $user = doctor_v_model::find($v_id); 
         $doctor_info=model_doctor::all();
-        $select_item=model_book::orderBy('b_id','desc')->paginate(7);
         $data=compact('select_item','user','doctor_info');
       
         return view('Doctor/view_d_appoinment')->with($data);
@@ -30,12 +36,20 @@ class vendor_controller extends Controller
     public function view_my_appoinment(){
         return view('Doctor/view_my_appoinment');
     }
-    public function select_my_appoinment(){
+    public function select_my_appoinment(Request $request){
         $v_id=session('v_id');
-        
-        $user = doctor_v_model::find($v_id); 
-        $name=$user->name;
-        $select_item=model_book::where('doctor',$name)->orderBy('b_id','desc')->paginate(7);
+        $search=$request['search'] ?? "";
+        if($search!==""){
+            $user = doctor_v_model::find($v_id); 
+            $name=$user->name;
+            $select_item=model_book::where('doctor',$name)->where('name','LIKE',"%$search%")->paginate(7);
+
+        }else{
+            $user = doctor_v_model::find($v_id); 
+            $name=$user->name;
+            $select_item=model_book::where('doctor',$name)->orderBy('b_id','desc')->paginate(7);
+        }
+      
 
         $doctor_info=model_doctor::all();
         $report=model_report::all();
@@ -65,10 +79,17 @@ public function send_report(Request $request){
         return view('Doctor/view_d_user');
     }
 
-    public function select_user(){
+    public function select_user(Request $request){
         $v_id=session('v_id');
+        $search=$request['search'] ?? ""; 
+        if($search !== ""){
+            $select_data=model_signup::where('fullname','LIKE',"%$search%")->orwhere('username','LIKE',"%$search%")->paginate(7); 
+
+        }else{
+            $select_data=model_signup::orderBy('u_id','desc')->paginate(7);
+
+        }
         $user = doctor_v_model::find($v_id); 
-        $select_data=model_signup::orderBy('u_id','desc')->paginate(7);
         $doctor_info=model_doctor::all();
         $data=compact('select_data','user','doctor_info');
         return view('Doctor/view_d_user')->with($data);

@@ -125,12 +125,13 @@ License: For each use you must have a valid license purchased only from above li
                     <i data-feather="menu"></i>
                 </a>
                 <div class="navbar-content">
-                    <form class="search-form">
+                    <form class="search-form" action="">
                         <div class="input-group">
                             <div class="input-group-text">
                                 <i data-feather="search"></i>
                             </div>
-                            <input type="text" class="form-control" id="navbarForm" placeholder="Search here...">
+                            <input type="search" class="form-control" name="search" id="navbarForm" value="" placeholder="Search here...">
+                            <button class="btn btn-primary">search</button>
                         </div>
                     </form>
                     <ul class="navbar-nav">

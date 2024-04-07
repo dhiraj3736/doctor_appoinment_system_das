@@ -60,7 +60,7 @@ class book_controller extends Controller
     
 
     public function select(){
-        $select_item = model_book::where('u_id', session('u_id'))->paginate(4); // Paginate the results with 4 records per page
+        $select_item = model_book::where('u_id', session('u_id'))->orderBy('b_id','desc')->paginate(4); // Paginate the results with 4 records per page
         $u_id=session('u_id');
         $user =model_signup::find($u_id); 
         return view('view_appoinment', compact('select_item','user'));
