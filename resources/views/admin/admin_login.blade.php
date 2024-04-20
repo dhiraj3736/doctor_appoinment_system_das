@@ -79,7 +79,11 @@ License: For each use you must have a valid license purchased only from above li
 
         <!-- Column containing forms -->
         <div class="form-container">
-            
+        @if(session('error'))
+    <span class="alert alert-success">
+        {{ session('error') }}
+    </span>
+    @endif
             <form action="{{url('/admin_login')}}" method="post">
                 @csrf
                 <h3>Admin Login</h3>

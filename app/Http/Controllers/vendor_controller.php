@@ -7,7 +7,9 @@ use App\Models\model_book;
 use App\Models\model_doctor;
 use App\Models\model_report;
 use App\Models\model_signup;
+use App\Notifications\reportNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class vendor_controller extends Controller
 {
@@ -17,7 +19,7 @@ class vendor_controller extends Controller
     }
     
     public function select_appoinment(Request $request){
-        $v_id=session('v_id');
+     
         $search=$request['search'] ?? "";
         if($search!==""){
             $select_item=model_book::where('name','LIKE',"%$search%")->paginate(7);
@@ -25,9 +27,9 @@ class vendor_controller extends Controller
             $select_item=model_book::orderBy('b_id','desc')->paginate(7);
 
         }
-        $user = doctor_v_model::find($v_id); 
+      
         $doctor_info=model_doctor::all();
-        $data=compact('select_item','user','doctor_info');
+        $data=compact('select_item','doctor_info');
       
         return view('Doctor/view_d_appoinment')->with($data);
 
@@ -62,11 +64,14 @@ class vendor_controller extends Controller
 public function send_report(Request $request){
     $report=new model_report();
 
-    
+   
     $report->report=$request['report'];
     $report->u_id=$request['u_id'];
     $report->b_id=$request['b_id'];
     $report->save();
+    $user=model_signup::find($report->u_id);
+    Notification::send($user, new reportNotification($report->b_id));
+
 
     return back()->with('message', ' information updated successfully.');
 
@@ -80,7 +85,7 @@ public function send_report(Request $request){
     }
 
     public function select_user(Request $request){
-        $v_id=session('v_id');
+        
         $search=$request['search'] ?? ""; 
         if($search !== ""){
             $select_data=model_signup::where('fullname','LIKE',"%$search%")->orwhere('username','LIKE',"%$search%")->paginate(7); 
@@ -89,26 +94,21 @@ public function send_report(Request $request){
             $select_data=model_signup::orderBy('u_id','desc')->paginate(7);
 
         }
-        $user = doctor_v_model::find($v_id); 
         $doctor_info=model_doctor::all();
-        $data=compact('select_data','user','doctor_info');
+        $data=compact('select_data','doctor_info');
         return view('Doctor/view_d_user')->with($data);
 
     }
 
    public function get_notification() {
-    $v_id=session('v_id');
-    $user = doctor_v_model::find($v_id);
+ 
     $doctor_info=model_doctor::all(); 
-    return view('Doctor/doctor_dashboard ', ['user' => $user,'doctor_info'=>$doctor_info]);
+    return view('Doctor/doctor_dashboard ', ['doctor_info'=>$doctor_info]);
 }
 
 public function run_doctor_profile(){
-    $v_id=session('v_id');
-    $user = doctor_v_model::find($v_id); 
     
-    $data=compact('user');
-    return view('Doctor/doctorprofile')->with($data);
+    return view('Doctor/doctorprofile');
 }
 
 

@@ -17,7 +17,7 @@
             color: white;
         }
 
-        h1,
+        h1,p,
         label {
             color: white;
         }
@@ -70,10 +70,10 @@
     </span>
     @endif
 
-    <form method="post" name="adminloginform" class="form" action="{{ route('login') }}">
+    <form method="post" name="adminloginform" class="form" action="{{ route('Forget-password-post') }}">
         @csrf
         <div id="border">
-            <h1>User Login</h1>
+            <p>Please enter your email search for your account.</p>
             @if(Session::has('error'))
             <p class="text-danger" style="color:red;">{{ Session::get('error') }}</p>
             @endif
@@ -83,10 +83,7 @@
             <label>Email:</label>
             <input type="email" name="email" class="textbox">
             <span style="color:red;">@error('email') {{ $message }} @enderror</span><br>
-            <label>Password:</label>
-            <input type="password" name="password" class="textbox" />
-            <span style="color:red;">@error('password') {{ $message }} @enderror</span><br>
-            <a href="{{route('Forget-password')}}">forgot password</a>
+
             <input type="submit" class="btn btn-primary" value="Submit">
         </div>
     </form>

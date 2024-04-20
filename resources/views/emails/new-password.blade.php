@@ -70,23 +70,27 @@
     </span>
     @endif
 
-    <form method="post" name="adminloginform" class="form" action="{{ route('login') }}">
+    <form method="post" name="adminloginform" class="form" action="{{ route('reset-password-post') }}">
         @csrf
         <div id="border">
-            <h1>User Login</h1>
+            <h1></h1>
             @if(Session::has('error'))
             <p class="text-danger" style="color:red;">{{ Session::get('error') }}</p>
             @endif
             @if(Session::has('success'))
             <p class="text-success">{{ Session::get('success') }}</p>
             @endif
+            <input type="hidden" name="token" id="" value="{{$token}}">
             <label>Email:</label>
             <input type="email" name="email" class="textbox">
             <span style="color:red;">@error('email') {{ $message }} @enderror</span><br>
-            <label>Password:</label>
-            <input type="password" name="password" class="textbox" />
+            <label>New Password:</label>
+            <input type="password" name="password" class="textbox">
             <span style="color:red;">@error('password') {{ $message }} @enderror</span><br>
-            <a href="{{route('Forget-password')}}">forgot password</a>
+            <label>Confirm Password:</label>
+            <input type="password" name="confirm-password" class="textbox">
+            <span style="color:red;">@error('confirm-password') {{ $message }} @enderror</span><br>
+
             <input type="submit" class="btn btn-primary" value="Submit">
         </div>
     </form>

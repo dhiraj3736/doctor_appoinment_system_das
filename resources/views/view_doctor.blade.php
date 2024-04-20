@@ -55,10 +55,14 @@
                                 <p class="card-text">Experience: {{$row->experiance}}</p>
 
                                 <p class="card-text">Available Time: {{$row->fromtime}} TO {{$row->totime}}</p>
+                                <a href="/book" class="btn btn-primary" >Book</a>
+
                             </div>
+
                             <div class="card-footer">
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>

@@ -25,18 +25,15 @@ public function select_service(){
     $notification=session('a_id');
 
     $service = model_service::all();
-    $noti = model_admin::find($notification); 
 
-    return view('admin/add_services', compact('service','noti'));
+    return view('admin/add_services', compact('service'));
 }
 
 public function edit_service($s_id){
-    $notification=session('a_id');
 
     $service = model_service::all();
     $edit = model_service::find($s_id);
-    $noti = model_admin::find($notification); 
-    return view('admin/add_services', compact('service', 'edit','noti'));
+    return view('admin/add_services', compact('service', 'edit'));
 }
 
 public function update_service(Request $reque,$s_id){

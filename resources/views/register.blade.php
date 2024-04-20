@@ -73,6 +73,11 @@
             <div class="col-md-6">
                 <div class="form-container">
                     <!-- Doctor Registration Form -->
+                    @if(session('success'))
+    <span class="alert alert-success">
+        {{ session('success') }}
+    </span>
+    @endif
                     <h3>Register</h3>
                     <form action="{{ url('/register') }}" method="post">
                         @csrf
@@ -86,18 +91,38 @@
                                 @endforeach
                             </select>
                         </div>
+                        <span>
+                @error('name')
+                {{$message}}
+                @enderror
+            </span>
                         <div class="form-group">
                             <label for="email">Email address</label>
                             <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp">
                         </div>
+                        <span>
+                @error('email')
+                {{$message}}
+                @enderror
+            </span>
                         <div class="form-group">
                             <label for="password">Password</label>
                             <input type="password" class="form-control" name="password" id="password">
                         </div>
+                        <span>
+                @error('password')
+                {{$message}}
+                @enderror
+            </span>
                         <div class="form-group">
                             <label for="confirm_password">Confirm Password</label>
                             <input type="password" class="form-control" name="confirm_password" id="confirm_password">
                         </div>
+                        <span>
+                @error('confirm_password')
+                {{$message}}
+                @enderror
+            </span> <br>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
@@ -108,6 +133,11 @@
             <div class="col-md-6">
                 <div class="form-container">
                     <!-- Doctor Login Form -->
+                    @if(session('error'))
+    <span class="alert alert-success">
+        {{ session('error') }}
+    </span>
+    @endif
                     <h3>Login</h3>
                     <form action="{{ url('/doctor_login') }}" method="post">
                         @csrf
@@ -115,10 +145,20 @@
                             <label for="login_email">Email address</label>
                             <input type="email" class="form-control" name="email" id="login_email">
                         </div>
+                        <span>
+                @error('email')
+                {{$message}}
+                @enderror
+            </span>
                         <div class="form-group">
                             <label for="login_password">Password</label>
                             <input type="password" class="form-control" name="password" id="login_password">
                         </div>
+                        <span>
+                @error('password')
+                {{$message}}
+                @enderror
+            </span><br>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>

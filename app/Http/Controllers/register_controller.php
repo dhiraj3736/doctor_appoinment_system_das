@@ -21,6 +21,7 @@ class register_controller extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email',
             'password' => 'required',
+            'confirm_password'=>'required|same:password'
         ]);
     
         // Create a new instance of doctor_v_model
@@ -44,13 +45,14 @@ class register_controller extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
+            
         ]);
     
         $user = doctor_v_model::where('email', $request->email)->first();
     
         if (!$user || $user->Password !== md5($request->password)) {
             // Authentication failed
-            return redirect('/register');
+            return redirect('/register')->with('error', 'Invalid email or password');;
         }else{
     
         // Authentication successful

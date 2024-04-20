@@ -3,8 +3,11 @@
 use App\Http\Controllers\admin_controller;
 use App\Http\Controllers\book_controller;
 use App\Http\Controllers\doctor_controller;
+use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\payment_controller;
 use App\Http\Controllers\register_controller;
+use App\Http\Controllers\report_controller;
 use App\Http\Controllers\signup_controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\service_controller;
@@ -58,7 +61,7 @@ Route::get('/logout', function () {
 });
 Route::middleware(['web'])->group(function () {
 
-    Route::get('/userdashboard', [signup_controller::class, 'main']);
+    Route::get('/userdashboard', [signup_controller::class, 'main'])->name('userdashboard');
 
     Route::get('/userdashboard', [signup_controller::class, 'get_notification']);
 
@@ -71,7 +74,17 @@ Route::middleware(['web'])->group(function () {
     // route::get('view_appoinment',function(){
     //     return view('view_appoinment');
     // });
-    route::get('view_appoinment', [book_controller::class, 'select']);
+    route::get('view_appoinment', [book_controller::class, 'select'])->name('view_appoinment');
+    route::get('successpayment', [payment_controller::class, 'successpayment'])->name('successpayment');
+
+    route::get('payment/{b_id}', [payment_controller::class, 'run_payment'])->name('payment');
+
+    route::get('payment/{b_id}', [payment_controller::class, 'payment']);
+    Route::post('payment_form', [Payment_controller::class, 'processPayment'])->name('payment_process');
+
+
+
+
     route::get('/delete/{id}', [book_controller::class, 'delete']);
     route::get('/edit/{id}', [book_controller::class, 'edit']);
     route::post('/edit/{id}', [book_controller::class, 'update']);
@@ -91,9 +104,22 @@ Route::middleware(['web'])->group(function () {
 
     Route::match(['get', 'post'], '/notifications/mark-as-read/{notification}',[NotificationController::class,'markAsRead'])->name('notifications.markAsRead');
 
+    Route::get('/view_report',[report_controller::class,'run_report']);
+
+    Route::get('/view_report',[report_controller::class,'send_report_to_user']);
+    route::get('/view_service', [book_controller::class, 'run_service']);
+
+    route::get('/view_service', [book_controller::class, 'view_service']);
 
 
 
+
+    // forget password
+
+    route::get('/Forget-password',[ForgetPasswordController::class,'forgetpassword'])->name('Forget-password');
+    route::post('/Forget-password',[ForgetPasswordController::class,'forgetpasswordpost'])->name('Forget-password-post');
+    route::get('/reset-password/{token}',[ForgetPasswordController::class,'resetPassword'])->name('reset-password');
+    route::post('/reset-password',[ForgetPasswordController::class,'resetPasswordPost'])->name('reset-password-post');
     // end user part
 
 
@@ -140,9 +166,7 @@ Route::middleware(['web'])->group(function () {
 
 
 
-    route::get('/view_service', [book_controller::class, 'run_service']);
 
-    route::get('/view_service', [book_controller::class, 'view_service']);
 
 
 

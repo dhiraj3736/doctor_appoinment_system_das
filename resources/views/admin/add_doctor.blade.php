@@ -107,9 +107,7 @@
         </div>
     </div>
     <div class="container mt-4">
-    <div class="d-flex justify-content-center">
-        {{ $doctors->links() }}
-    </div>
+ 
 </div>
 </div>
 

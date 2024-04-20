@@ -1,4 +1,15 @@
 <!-- Include Bootstrap CSS -->
+
+<!-- Navbar -->
+<?php
+
+use App\Models\model_signup;
+use Illuminate\Support\Facades\Session;
+$u_id=session('u_id');
+$user =model_signup::find($u_id); 
+
+$notifications = $user->notifications;
+?>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <!-- Include Feather Icons CSS -->
 <link href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css" rel="stylesheet">
@@ -53,11 +64,11 @@
             padding: 10px 20px;
             transition: background-color 0.3s ease;
         }
-
         .dropdown-item:hover {
             background-color: #343a40;
             color: #ffc107;
         }
+      
 
         .navbar-nav .nav-item .nav-link.active {
             color: #ffc107;
@@ -113,6 +124,8 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="/book">Book</a></li>
                         <li><a class="dropdown-item" href="/view_appoinment">View Appointment</a></li>
+                        <li><a class="dropdown-item" href="/view_report">View Report</a></li>
+
                     </ul>
                 </li>
 
@@ -121,9 +134,9 @@
                         <img src="./images/qqqq.png" alt="">
                     </a>
                     <div class="dropdown-menu dropdown-menu-end">
-    @foreach ($user->unreadNotifications as $notification)
-        @if ($notification->notifiable_id == session('u_id'))
-            <a class="dropdown-item" href="/view_appointment" 
+    @foreach ($user->Notifications as $notification )
+        @if ( isset($notification->data['name']))
+            <a class="dropdown-item {{ $notification->read_at ? '' : 'bg-warning text-light' }}" href="/view_appointment" 
                onclick="event.preventDefault(); document.getElementById('mark-as-read-{{ $notification->id }}').submit();">
                 Hello, {{ $notification->data['name'] }} your appointment is Approved
             </a>
@@ -133,6 +146,20 @@
             </form>
             <!-- Add hidden input to store notification ID -->
             <input type="hidden" name="notification_id" value="{{ $notification->id }}">
+            @elseif( isset($notification->data['b_id']))
+            
+
+            <a class="dropdown-item {{ $notification->read_at ? '' : 'bg-warning text-light' }}" href="/view_report" 
+               onclick="event.preventDefault(); document.getElementById('mark-as-read-{{ $notification->id }}').submit();">
+            New report added by doctor
+            </a>
+            <form id="mark-as-read-{{ $notification->id }}" 
+                  action="{{ route('notifications.markAsRead', $notification->id) }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+            <!-- Add hidden input to store notification ID -->
+            <input type="hidden" name="notification_id" value="{{ $notification->id }}">
+
         @endif
     @endforeach
 </div>
@@ -150,7 +177,7 @@
                         @endif
                     </a>
 
-                    <div class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="profileDropdown">
+                    <div class="dropdown-menu dropdown-menu-end  p-0" aria-labelledby="profileDropdown">
                         <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
                             <div class="mb-3">
                                 @if(isset($user->image) && $user->image !== NULL)

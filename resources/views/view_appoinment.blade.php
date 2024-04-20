@@ -5,7 +5,7 @@
     <h4 class="display-4" style="color: white; font-size: 30px;">View Appointment</h4>
 </div>
 
-<div class="container mt-5">
+<div class="container "style="margin-top:-70PX;">
     <div class="table-responsive">
         <table class="table table-bordered table-hover mb-0" style="background-color: rgba(255, 255, 255, 0.8);">
             <thead class="bg-dark text-white">
@@ -40,16 +40,21 @@
                         <span class="badge bg-danger">Not Approved</span>
                         @elseif($row->status == 1)
                         <span class="badge bg-success">Approved</span>
-                        @else
-                        <span class="badge bg-secondary">Unknown</span>
+                        @elseif($row->payment==!null)
+                        <span class="badge bg-success">Approve</span>
                         @endif
                     </td>
-                   
+
                     <td>
                     @if($row->status == 0)
                         <a href="/delete/{{$row->b_id}}" class="badge bg-danger">Delete</a>
                         <a href="/edit/{{$row->b_id}}" class="badge bg-success">Edit</a>
-                        @endif
+                       @elseif($row->status==1)
+                       <a href="/payment/{{$row->b_id}}" class="badge bg-danger" >payment pending</a>
+                       @elseif($row->status==2)
+                       payment complete
+
+                       @endif
                     </td>
                 </tr>
                 @endforeach
@@ -65,6 +70,5 @@
         {{ $select_item->links() }}
     </div>
 </div>
-
 
 @endsection

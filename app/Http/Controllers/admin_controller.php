@@ -33,7 +33,7 @@ public function admin_login(Request $request){
         $user=model_admin::where('email',$request->email)->first();
 
         if(!$user|$user->password!=md5($request->password)){
-            echo "invalid";
+            return redirect('/admin_login')->with('error', 'Invalid email or password');;
         }else{
             auth::login($user);
 
@@ -63,7 +63,7 @@ public function admin_login(Request $request){
     }
 
     public function select_for_user(Request $request){
-        $notification=session('a_id');
+      
         //search
         $search=$request['search'] ?? ""; 
         if($search !== ""){
@@ -76,15 +76,14 @@ public function admin_login(Request $request){
         }
 
         
-         $noti = model_admin::find($notification); 
+     
 
-        $data=compact('select_data','noti','search');
+        $data=compact('select_data','search');
         return view('admin/view_user')->with($data);
        
 
     }
     public function select_for_dashboard(Request $request){
-        $notification=session('a_id');
         $search=$request['search'] ?? "";
             //search
         if($search!==""){
@@ -101,10 +100,10 @@ public function admin_login(Request $request){
            $service = model_service::orderBy('s_id','desc')->take(3)->get();
         }
        
-        $noti = model_admin::find($notification); 
+       
 
 
-        $data=compact('user','book','doctors','service','noti');
+        $data=compact('user','book','doctors','service');
       
         return view('admin/admin_dashboard')->with($data);
 
@@ -126,11 +125,11 @@ public function admin_login(Request $request){
 
         }
         
-        $noti = model_admin::find($notification); 
+      
 
 
         
-        $data=compact('select_data','noti');
+        $data=compact('select_data');
       
         return view('admin/view_appoinment')->with($data);
 

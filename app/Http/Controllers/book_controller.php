@@ -19,9 +19,8 @@ class book_controller extends Controller
     public function run(){
         $url=url('/book');
         $title="Book Appoinment";
-        $u_id=session('u_id');
-        $user =model_signup::find($u_id); 
-        $data=compact('url','title','user');
+        
+        $data=compact('url','title');
         return view('book')->with($data);
     }
     public function insert(Request $request)
@@ -62,8 +61,7 @@ class book_controller extends Controller
     public function select(){
         $select_item = model_book::where('u_id', session('u_id'))->orderBy('b_id','desc')->paginate(4); // Paginate the results with 4 records per page
         $u_id=session('u_id');
-        $user =model_signup::find($u_id); 
-        return view('view_appoinment', compact('select_item','user'));
+        return view('view_appoinment', compact('select_item'));
     }
     
 public function delete($b_id){
@@ -74,26 +72,24 @@ public function delete($b_id){
 
 public function retrive_service(){
     $url=url('/book');
-    $title="Book Appoinment";
-    $u_id=session('u_id');
-    $user =model_signup::find($u_id); 
+    $title="Book Appointment";
+
     $service=model_service::all();
     $doctor=model_doctor::all();
-    $data=compact('service','doctor','url','title','user');
+    $data=compact('service','doctor','url','title');
     return view('book')->with($data);
         
 }
 
 public function edit($b_id){
     $url=url('/edit').'/'.$b_id;
-    $title="update"; 
+    $title="Update Appointment"; 
     
     $service=model_service::all();
     $select_item=model_book::find($b_id);
     $doctor=model_doctor::all();
-    $u_id=session('u_id');
-    $user =model_signup::find($u_id); 
-    $data=compact('service','doctor','select_item','url','title','user');
+    
+    $data=compact('service','doctor','select_item','url','title');
     return view('book')->with($data);
 }
 
@@ -157,9 +153,8 @@ public function run_doctor(){
 public function retrive_doctor_info(){
     
     $doctor=model_doctor::all();
-    $u_id=session('u_id');
-    $user =model_signup::find($u_id); 
-    $data=compact('doctor','user');
+   
+    $data=compact('doctor');
     return view('view_doctor')->with($data);
 }
 

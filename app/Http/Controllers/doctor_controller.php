@@ -60,10 +60,10 @@ class doctor_controller extends Controller
             }else{
                 $doctors=model_doctor::orderBy('d_id','desc')->paginate(6);
             }
-            $noti = model_admin::find($notification); 
+        
 
            
-            $data=compact('doctors','noti');
+            $data=compact('doctors');
             return view('admin/add_doctor')->with($data);
          }
 
@@ -76,8 +76,7 @@ class doctor_controller extends Controller
          public function edit_doctor($d_id){
             $doctors=model_doctor::all();
             $edit=model_doctor::find($d_id);
-            $noti = model_admin::find(1); 
-            $data=compact('doctors','edit','noti');
+            $data=compact('doctors','edit');
             return view('admin/add_doctor')->with($data);
          }
 

@@ -132,9 +132,8 @@ class signup_controller extends Controller
     
 }
 public function get_notification() {
-    $u_id=session('u_id');
-    $user =model_signup::find($u_id); 
-    return view('userdashboard ', ['user' => $user]);
+  
+    return view('userdashboard ');
     
     
 }

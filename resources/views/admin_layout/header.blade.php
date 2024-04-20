@@ -1,3 +1,15 @@
+
+<?php
+
+use App\Models\doctor_v_model;
+use App\Models\model_admin;
+
+use Illuminate\Support\Facades\Session;
+$a_id=session('a_id');
+$noti =model_admin::find($a_id); 
+
+$notifications = $noti->notifications;
+?>
 <!DOCTYPE html>
 <!--
 Template Name: NobleUI - HTML Bootstrap 5 Admin Dashboard Template
@@ -80,7 +92,7 @@ License: For each use you must have a valid license purchased only from above li
                     <li class="nav-item">
                         <a href="{{url('/admin_view_appoinment')}}" class="nav-link">
                             <i data-feather="eye" class="link-icon"></i>
-                            <span class="link-title">View Appoinment</span>
+                            <span class="link-title">View Appointment</span>
                         </a>
                     </li>
                     <li class="nav-item">

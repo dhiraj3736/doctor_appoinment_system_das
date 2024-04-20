@@ -21,12 +21,12 @@ class NotificationController extends Controller
             $user = model_signup::find($u_id);
             if ($user) {
                 $notification = $user->notifications()->find($notificationId);
-                if ($notification) {
+                if ($notification && isset($notification->data['name'])) {
                     $notification->markAsRead();
                     return redirect('view_appoinment');
-                } else {
-                    // Handle case where notification is not found
-                }
+                } elseif($notification && isset($notification->data['b_id'])) {
+                    $notification->markAsRead();
+                    return redirect('view_report');                }
             } else {
                 // Handle case where user is not found
             }
