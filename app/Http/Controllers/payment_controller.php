@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\model_admin;
 use App\Models\model_book;
 use App\Models\model_service;
 use App\Models\model_signup;
+use App\Notifications\paymentNotification;
 use Illuminate\Http\Request;
 use Symfony\Component\Uid\Uuid;
 
+use Illuminate\Support\Facades\Notification;
 
 
 
@@ -139,6 +142,14 @@ public function successpayment(Request $request){
     $payment->payment=$amount;
     $payment->status=2;
     $payment->save();
+
+    $name=$payment->name;
+    $service=$payment->service;
+    $admin=model_admin::all();
+
+    Notification::send($admin, new paymentNotification($service,$name));
+
+    // Mail::to($input->email)->send(new RegisterMail($input));
 
 
     // Now you have $pidx and $status available for further processing

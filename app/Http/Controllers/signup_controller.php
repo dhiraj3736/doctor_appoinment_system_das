@@ -9,6 +9,7 @@ use App\Mail\RegisterMail;
 use App\Events\NewDataInserted;
 use App\Models\model_admin;
 use App\Notifications\Booknotification;
+use App\Notifications\registerNotification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -32,7 +33,7 @@ class signup_controller extends Controller
                 'gender' => 'required',
                 'username' => 'required',
                 'password' => 'required',
-                
+
                 'password-confirmation' => 'required|same:password',
                 'address' => 'required',
                 'number' => 'required',
@@ -46,7 +47,7 @@ class signup_controller extends Controller
         $input->fullname = $request['fullname'];
         $input->gender = $request['gender'];
         $input->username = $request['username'];
-       
+
         $input->password = md5($request['password']);
         $input->address = $request['address'];
         $input->number = $request['number'];
@@ -55,12 +56,12 @@ class signup_controller extends Controller
 
         $input->save();
         $admin=model_admin::all();
-       
-        Notification::send($admin, new Booknotification($input->fullname));
-       
+
+        Notification::send($admin, new registerNotification($input->fullname));
+
         Mail::to($input->email)->send(new RegisterMail($input));
         return redirect()->back()->with('message','Your account register successfully and verify your email address ');
-        
+
     }
 
     public function verify($token){
@@ -82,46 +83,46 @@ class signup_controller extends Controller
         return view('login');
     }
 
-    
+
     public function login(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
-    
+
         $user = model_signup::where('email', $request->email)->first();
-    
+
         if (!$user) {
             return redirect()->route('login')->with('error', 'Invalid email or password.');
         }
-    
+
         if (!$user->email_verified_at) {
             return redirect()->back()->with('error', 'Email not verified');
         }
-    
+
         if ($user->password !== md5($request->password)) {
             // Authentication failed
             return redirect()->route('login')->with('error', 'Invalid email or password.');
         }
-    
+
         // Authentication successful
         Auth::login($user);
-    
+
         $fullname = $user->fullname;
         $email = $user->email;
         $u_id = $user->u_id;
         $request->session()->put('email', $email);
         $request->session()->put('fullname', $fullname);
         $request->session()->put('u_id', $u_id);
-    
+
         // Redirect to userdashboard route
         return redirect('/userdashboard');
     }
-    
-    
-    
-    
+
+
+
+
     public function main(){
         if(session('email')){
         return view('userdashboard');
@@ -129,18 +130,18 @@ class signup_controller extends Controller
         return view('login');
     }
 
-    
+
 }
 public function get_notification() {
-  
+
     return view('userdashboard ');
-    
-    
+
+
 }
 
 public function run_profile(){
     $u_id=session('u_id');
-    $user =model_signup::find($u_id); 
+    $user =model_signup::find($u_id);
     $data=compact('user');
     return view('user_profile')->with($data);
 }
@@ -151,7 +152,7 @@ public function add_profile_picture(Request $request){
         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Assuming maximum file size is 2048 KB (2 MB)
     ]);
     $u_id=session('u_id');
-    $input =model_signup::find($u_id); 
+    $input =model_signup::find($u_id);
 
     if ($request->hasFile('image') && $request->file('image')->isValid()) {
         // Generate a unique filename
@@ -161,7 +162,7 @@ public function add_profile_picture(Request $request){
         $request->file('image')->storeAs('public/uploads', $filename);
 
         // Save other form data along with the filename
-      
+
 
         $input->image = $filename;
         $input->save();
@@ -175,12 +176,12 @@ public function add_profile_picture(Request $request){
 }
 
 public function edit_profile(Request $request){
-    
+
     $request->validate(
         [
             'fullname' => 'required',
             'username' => 'required',
-            
+
             'address' => 'required',
             'number' => 'required',
             'email' => 'required'
@@ -194,16 +195,16 @@ public function edit_profile(Request $request){
 
     $input->fullname = $request['fullname'];
     $input->username = $request['username'];
-   
+
     $input->address = $request['address'];
     $input->number = $request['number'];
     $input->email = $request['email'];
 
     $input->save();
-   
-   
+
+
     return redirect()->back()->with('message','Your account register successfully and verify your email address ');
-    
+
 }
 
 
@@ -230,7 +231,7 @@ public function change_password(Request $request) {
         // Update the password
         $doctor->password = $newPassword;
         $doctor->save();
-        
+
 
         return redirect()->back()->with('message', 'Password changed successfully.');
     } else {

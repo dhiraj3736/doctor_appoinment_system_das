@@ -38,6 +38,9 @@
                                 <th class="pt-0">time</th>
                                 <th class="pt-0">number</th>
                                 <th class="pt-0">status</th>
+                                <th class="pt-0">payment</th>
+
+
                             </tr>
                         </thead>
                         <tbody>
@@ -56,12 +59,14 @@
                                 <td>{{$row->number}}</td>
                                 <td>
 
-    
+
                                 <a href="status/{{$row->b_id}}" class="badge bg-{{ $row->status ? 'success' : 'danger' }}">
     {{ $row->status ? 'Approve' : 'Not approved' }}
 </a>
 
 </td>
+<td>{{$row->payment}}</td>
+
 
 
                             </tr>

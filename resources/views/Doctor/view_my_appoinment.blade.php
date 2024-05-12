@@ -70,7 +70,7 @@
                                             {{ $row->status ? 'Approve' : 'Not approved' }}
                                         </a></td>
 
-                                    @if(isset($row->status) && $row->status == 1)
+                                    @if(isset($row->status) && $row->status == 1 || $row->status == 2 )
 
 
                                     <td>
@@ -83,7 +83,7 @@
 
                                     <td> <a href="#" class="badge bg-secondary" data-bs-toggle="modal" data-bs-target="#view_report{{$row->b_id}}">view Report</a>
                                     </td>
-                                   
+
 
 
 

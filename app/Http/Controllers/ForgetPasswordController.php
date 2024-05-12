@@ -24,16 +24,16 @@ class ForgetPasswordController extends Controller
             'email' => 'required|email|exists:signup',
         ]);
         $token=Str::random(length:64);
-
-
-
+        $email=$request['email'];
+        $user_name=model_signup::where('email',$email)->first();
+        $name=$user_name->fullname;
 
         DB::table('password_reset_tokens')->insert([
             'email'=>$request->email,
             'token'=>$token,
             'created_at'=>Carbon::now()
         ]);
-        Mail::send("emails.forget-password",['token'=>$token],function($message) use ($request){
+        Mail::send("emails.forget-password",['token'=>$token,'name'=>$name],function($message) use ($request){
             $message->to($request->email);
             $message->subject("reset password");
         });

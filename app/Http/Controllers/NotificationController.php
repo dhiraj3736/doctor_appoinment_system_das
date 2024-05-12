@@ -16,7 +16,7 @@ class NotificationController extends Controller
         $u_id = session('u_id');
         $v_id = session('v_id');
         $a_id=session('a_id');
-    
+
         if ($u_id) {
             $user = model_signup::find($u_id);
             if ($user) {
@@ -50,10 +50,12 @@ class NotificationController extends Controller
                 if ($notification && isset($notification->data['doctor']) && isset($notification->data['name'])) {
                     $notification->markAsRead();
                     return redirect('/admin_view_appoinment');
-                } elseif ($notification && isset($notification->data['name'])) {
+                } elseif ($notification && isset($notification->data['customer'])) {
                     $notification->markAsRead();
                     return redirect('/view_user');
-                }
+                }elseif ($notification && isset($notification->data['user_name']) && isset($notification->data['service'])) {
+                    $notification->markAsRead();
+                    return redirect('/admin_view_appoinment');
             } else {
                 // Handle case where admin is not found
             }
@@ -62,5 +64,5 @@ class NotificationController extends Controller
         // Redirect back to the previous page if none of the conditions are met or an error occurs
         return redirect()->back();
     }
-    
-}
+
+}}
