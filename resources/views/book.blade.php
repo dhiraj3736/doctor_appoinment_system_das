@@ -1,6 +1,3 @@
-
-
-
 @extends('layouts.main')
 
 @section('main-section')
@@ -10,10 +7,10 @@
         <div class="alert alert-success" role="alert">
             {{ session('message') }}
         </div>
-        @endif  
+        @endif
         <div class="col-md-6">
             <h1 class="display-4" style="color: white; font-size:30px;">{{$title}}</h1>
-            <form action="{{$url}}" method="post" style="width:550px; color:white;">
+            <form action="{{$url}}" method="post" style="color:white;">
                 @csrf
                 <div class="container" style="background-image:url(./images/3.jpg); padding: 20px; border-radius: 10px;">
                     <div class="mb-3">
@@ -53,8 +50,6 @@
                         @enderror
                     </span><br>
 
-
-
                     <label><b>Address:</b></label><br>
                     <input type="text" class="form-control" placeholder="address" value="{{isset($select_item) ? $select_item->address : old('address')}}" name="address">
                     <span style="color:red;">
@@ -84,12 +79,9 @@
                         @enderror
                     </span><br>
 
-
-
                     <label for="">Doctor</label>
                     <select name="doctor" class="form-control" id="doctor">
-                    <option value="">please choose doctor</option>
-
+                        <option value="">please choose doctor</option>
                         @foreach($doctor as $row)
                         <option value="{{ $row->name }}" {{ (isset($select_item) && $select_item->name == $row->name) || old('doctor') == $row->name ? 'selected' : '' }}>
                             {{ $row->name }}
@@ -102,22 +94,11 @@
                         @enderror
                     </span><br>
 
-
                     <label id="doctorTimeLabel"><b>Doctor Available Time</b></label><br>
+                    <span id="doctorTimeSpan"></span><br>
 
-<!-- Display the doctor's available time dynamically -->
-              
-                    <span style="color:red;">
-                        @error('time')
-                        {{$message}}
-                        @enderror
-                    </span><br>
-
-
-                    <label id=""><b>Add time</b></label>
+                    <label><b>Add time</b></label>
                     <input type="time" name="time" id="phone" class="form-control"  value="{{isset($select_item) ? $select_item->time : old('time')}}"><br>
-
-
 
                     <label><b>Contact Number</b></label><br>
                     <input type="text" name="number" id="phone" class="form-control" placeholder="Phone Number" value="{{isset($select_item) ? $select_item->number : old('number')}}">
@@ -126,7 +107,7 @@
                         {{$message}}
                         @enderror
                     </span><br>
-                    
+
                     <!-- Other form fields... -->
                     <input type="submit" name="submit" value="Submit" class="btn btn-primary">
                 </div>

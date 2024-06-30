@@ -163,7 +163,7 @@ Route::middleware(['web'])->group(function () {
 
     route::post('/edit_service/{s_id}', [service_controller::class, 'update_service']);
 
-
+    route::get('/services_for_doctor', [doctor_controller::class, 'select_service']);
 
 
 
@@ -173,6 +173,7 @@ Route::middleware(['web'])->group(function () {
     route::get('/add_doctor', [doctor_controller::class, 'run_doctor']);
     route::post('/add_doctor', [doctor_controller::class, 'insert_doctor_info']);
     route::get('/add_doctor', [doctor_controller::class, 'retrive_doctor_info']);
+
 
     route::get('/delete_doctor/{d_id}', [doctor_controller::class, 'delete_doctor']);
 

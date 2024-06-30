@@ -11,71 +11,70 @@
             background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
             url("{{ asset('/images/3.jpg') }}");
             background-size: cover;
+            color: white;
         }
 
         .nav-link {
             color: white;
         }
 
-        h1,p,
-        label {
-            color: white;
-        }
-
         #border {
-            width: 300px;
-            height: auto;
-            border: 1px solid black;
+            max-width: 300px;
+            width: 90%; /* Adjusted for responsiveness */
             margin: auto;
-            position: relative;
-            box-shadow: 0 10px 25px;
+            padding: 15px;
+            border: 1px solid black;
             border-radius: 25px;
-            padding: 3px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
         }
 
         .textbox {
-            width: 200px;
+            width: 100%; /* Adjusted for responsiveness */
             height: 30px;
-            margin: 0 auto;
-            /* Center horizontally */
-            display: block;
             border-radius: 20px;
+            margin-bottom: 10px; /* Added spacing between elements */
         }
 
         .form {
-            margin-top: 150px;
+            margin-top: 50px; /* Adjusted for spacing */
             text-align: center;
-            /* Center the form horizontally */
         }
     </style>
 </head>
 
 <body>
-    <div class="card-header bg-transparent">
-        <ul class="nav nav-pills card-header-pills justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link" href="/dashboard">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="/login">Login</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/signup">SignUp</a>
-            </li>
-        </ul>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+        <div class="container">
+            <a class="navbar-brand" href="#">Logo</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/signup">SignUp</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     @if(session('message'))
-    <span class="alert alert-success">
-        {{ session('message') }}
-    </span>
+    <div class="alert alert-success">{{ session('message') }}</div>
     @endif
 
     <form method="post" name="adminloginform" class="form" action="{{ route('Forget-password-post') }}">
         @csrf
         <div id="border">
-            <p>Please enter your email search for your account.</p>
+            <p>Please enter your email to search for your account.</p> <!-- Corrected typo -->
             @if(Session::has('error'))
-            <p class="text-danger" style="color:red;">{{ Session::get('error') }}</p>
+            <p class="text-danger">{{ Session::get('error') }}</p>
             @endif
             @if(Session::has('success'))
             <p class="text-success">{{ Session::get('success') }}</p>
@@ -87,6 +86,7 @@
             <input type="submit" class="btn btn-primary" value="Submit">
         </div>
     </form>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 

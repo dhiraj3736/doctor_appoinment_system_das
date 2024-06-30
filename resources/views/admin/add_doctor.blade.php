@@ -44,13 +44,33 @@
                         <div class="form-group row">
                             <label for="fromTime" class="col-sm-2 col-form-label">From:</label>
                             <div class="col-sm-4">
-                                <input type="time" class="form-control" id="fromTime" name="fromtime">
+                                <input type="time" class="form-control" id="fromTime" name="fromtime"  value="{{isset($edit) ? $edit->fromtime : old('frontime')}}">
                             </div>
                             <label for="toTime" class="col-sm-2 col-form-label">To:</label>
                             <div class="col-sm-4">
-                                <input type="time" class="form-control" id="toTime" name="totime">
+                                <input type="time" class="form-control" id="toTime" name="totime" value="{{isset($edit) ? $edit->totime : old('totime')}}">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label>Select Services</label>
+                            <div id="services">
+                                @foreach ($service as $row)
+                                    <div class="form-check">
+                                        <input
+                                            type="checkbox"
+                                            name="services[]"
+                                            value="{{ $row->s_id }}" {{-- Always set value to the service ID --}}
+                                            class="form-check-input"
+                                            id="service_{{ $loop->index }}"
+                                            {{ isset($edit) && in_array($row->s_id, json_decode($edit->service_id, true)) ? 'checked' : '' }}
+                                            >
+                                        <label class="form-check-label" for="service_{{ $loop->index }}">{{ $row->service }}</label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+
                         <div class="form-group">
                             <label for="exampleInputFile">File input</label>
                             <div class="input-group">
@@ -107,7 +127,7 @@
         </div>
     </div>
     <div class="container mt-4">
- 
+
 </div>
 </div>
 

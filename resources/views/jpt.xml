@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <WebView
+        android:id="@+id/myweb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Hello World!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+package com.example.doctor_appointment;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
+public class MainActivity extends AppCompatActivity {
+    WebView myweb;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        myweb=findViewById(R.id.myweb);
+        myweb.getSettings().setJavaScriptEnabled(true);
+        myweb.setWebViewClient(new WebViewClient());
+        myweb.loadUrl("http://10.0.2.2:8000/dashboard");
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $user = model_signup::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'result' => 'fail',
+                'error' => 'Invalid email or password.'
+            ], 401);
+        }
+
+        if (!$user->email_verified_at) {
+            return response()->json([
+                'result' => 'fail',
+                'error' => 'Email not verified.'
+            ], 403);
+        }
+
+        if ($user->password !== md5($request->password)) {
+            return response()->json([
+                'result' => 'fail',
+                'error' => 'Invalid email or password.'
+            ], 401);
+        }
+
+        // Log in the user
+        Auth::login($user);
+
+        // Store user information in session
+        $request->session()->put('email', $user->email);
+        $request->session()->put('fullname', $user->fullname);
+        $request->session()->put('u_id', $user->u_id);
+
+        // Generate session ID
+        $sessionId = session()->getId();
+
+        // Return JSON response with success message, session ID, and user information
+        return response()->json([
+            'result' => 'success',
+            'session_id' => $sessionId,
+            'user' => [
+                'fullname' => $user->fullname,
+                'email' => $user->email,
+                'u_id' => $user->u_id
+            ]
+        ]);
+        return view("/userdashboard");
+    }

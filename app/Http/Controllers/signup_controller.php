@@ -123,6 +123,8 @@ class signup_controller extends Controller
 
 
 
+
+
     public function main(){
         if(session('email')){
         return view('userdashboard');

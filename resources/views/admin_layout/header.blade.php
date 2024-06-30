@@ -95,6 +95,8 @@ License: For each use you must have a valid license purchased only from above li
                             <span class="link-title">View Appointment</span>
                         </a>
                     </li>
+
+                    @if (session('role')=='admin')
                     <li class="nav-item">
                         <a href="{{ url('/add_service') }}" class="nav-link">
                             <i class="link-icon" data-feather="plus"></i>
@@ -107,6 +109,8 @@ License: For each use you must have a valid license purchased only from above li
                             <span class="link-title">Add Doctor</span>
                         </a>
                     </li>
+                @endif
+
 
                     <li class="nav-item">
                         <a href="{{ url('/logout_admin') }}" class="nav-link">

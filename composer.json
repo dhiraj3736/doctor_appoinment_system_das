@@ -13,7 +13,8 @@
         "laravel/tinker": "^2.8",
         "laravel/vonage-notification-channel": "^3.3",
         "symfony/uid": "^6.4",
-        "twilio/sdk": "^7.16"
+        "twilio/sdk": "^7.16",
+        "tymon/jwt-auth": "^2.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",

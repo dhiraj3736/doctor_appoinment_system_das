@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>Bootstrap Demo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         body {
@@ -13,83 +13,86 @@
             background-size: cover;
         }
 
-        .nav-link {
-            color: white;
-        }
-
+        .nav-link,
         h1,
         label {
             color: white;
         }
 
         #border {
-            width: 300px;
-            height: auto;
-            border: 1px solid black;
+            width: 90%;
+            max-width: 300px;
             margin: auto;
             position: relative;
-            box-shadow: 0 10px 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
             border-radius: 25px;
-            padding: 3px;
+            padding: 20px;
         }
 
         .textbox {
-            width: 200px;
-            height: 30px;
-            margin: 0 auto;
-            /* Center horizontally */
-            display: block;
+            width: 100%;
+            height: 40px;
             border-radius: 20px;
+            margin-bottom: 10px;
         }
 
         .form {
-            margin-top: 150px;
+            margin-top: 50px;
             text-align: center;
-            /* Center the form horizontally */
         }
     </style>
 </head>
 
 <body>
-    <div class="card-header bg-transparent">
-        <ul class="nav nav-pills card-header-pills justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link" href="/dashboard">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="/login">Login</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/signup">SignUp</a>
-            </li>
-        </ul>
-    </div>
-    @if(session('message'))
-    <span class="alert alert-success">
-        {{ session('message') }}
-    </span>
-    @endif
-
-    <form method="post" name="adminloginform" class="form" action="{{ route('login') }}">
-        @csrf
-        <div id="border">
-            <h1>User Login</h1>
-            @if(Session::has('error'))
-            <p class="text-danger" style="color:red;">{{ Session::get('error') }}</p>
-            @endif
-            @if(Session::has('success'))
-            <p class="text-success">{{ Session::get('success') }}</p>
-            @endif
-            <label>Email:</label>
-            <input type="email" name="email" class="textbox">
-            <span style="color:red;">@error('email') {{ $message }} @enderror</span><br>
-            <label>Password:</label>
-            <input type="password" name="password" class="textbox" />
-            <span style="color:red;">@error('password') {{ $message }} @enderror</span><br>
-            <a href="{{route('Forget-password')}}">forgot password</a>
-            <input type="submit" class="btn btn-primary" value="Submit">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+        <div class="container">
+            <a class="navbar-brand" href="#">Logo</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/signup">SignUp</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </form>
+    </nav>
+
+    <div class="container">
+        @if(session('message'))
+        <div class="alert alert-success">{{ session('message') }}</div>
+        @endif
+
+        <form method="post" name="adminloginform" class="form" action="{{ route('login') }}">
+            @csrf
+            <div id="border">
+                <h1>User Login</h1>
+                @if(Session::has('error'))
+                <p class="text-danger">{{ Session::get('error') }}</p>
+                @endif
+                @if(Session::has('success'))
+                <p class="text-success">{{ Session::get('success') }}</p>
+                @endif
+                <label>Email:</label>
+                <input type="email" name="email" class="textbox">
+                <span style="color:red;">@error('email') {{ $message }} @enderror</span><br>
+                <label>Password:</label>
+                <input type="password" name="password" class="textbox" />
+                <span style="color:red;">@error('password') {{ $message }} @enderror</span><br>
+                <a href="{{route('Forget-password')}}">Forgot Password</a><br>
+                <input type="submit" class="btn btn-primary" value="Submit">
+            </div>
+        </form>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 

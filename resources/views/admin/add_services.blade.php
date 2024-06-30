@@ -9,12 +9,18 @@
     </div>
     <!-- /.card-header -->
     <!-- form start -->
+    @if(session('message'))
+    <div class="alert alert-success">{{ session('message') }}</div>
+    @endif
+
     @if(isset($edit))
+
     <!-- Editing existing service -->
-    <form action="/edit_service/{{ $edit->s_id }}" method="post">
+    <form action="/edit_service/{{ $edit->s_id }}" method="post"enctype="multipart/form-data">
         @else
         <!-- Adding new service -->
-        <form action="/add_service" method="post">
+
+        <form action="/add_service" method="post" enctype="multipart/form-data">
             @endif
             @csrf
             <div class="card-body">
@@ -30,7 +36,14 @@
                     <label for="Service">Price</label>
                     <input type="text" class="form-control" value="{{isset($edit) ? $edit->price : old('price')}}" name="price" placeholder="Enter Price">
                 </div>
-
+                <div class="form-group">
+                    <label for="exampleInputFile">Add service image</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" name="image" class="custom-file-input" id="exampleInputFile">
+                        </div>
+                    </div>
+                </div>
 
             </div>
             <!-- /.card-body -->

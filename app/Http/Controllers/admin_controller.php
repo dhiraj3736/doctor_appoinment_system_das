@@ -37,13 +37,13 @@ public function admin_login(Request $request){
         }else{
             auth::login($user);
 
-          
+
             $email = $user->email;
             $a_id=$user->a_id;
+            $role=$user->role;
             $request->session()->put('email',$email);
-           
-          
             $request->session()->put('a_id',$a_id);
+            $request->session()->put('role',$role);
             return redirect('/admin_dashboard');
         }
 }
@@ -56,18 +56,18 @@ public function admin_login(Request $request){
     public function run_admin_dashboard(){
         return view('admin/admin_dashboard');
     }
-  
+
 
     public function run_view_user(){
         return view('admin/view_user');
     }
 
     public function select_for_user(Request $request){
-      
+
         //search
-        $search=$request['search'] ?? ""; 
+        $search=$request['search'] ?? "";
         if($search !== ""){
-            $select_data=model_signup::where('fullname','LIKE',"%$search%")->orwhere('username','LIKE',"%$search%")->paginate(7); 
+            $select_data=model_signup::where('fullname','LIKE',"%$search%")->orwhere('username','LIKE',"%$search%")->paginate(7);
 
         }
         //normal
@@ -75,22 +75,22 @@ public function admin_login(Request $request){
             $select_data = model_signup::orderBy('u_id', 'desc')->paginate(7);
         }
 
-        
-     
+
+
 
         $data=compact('select_data','search');
         return view('admin/view_user')->with($data);
-       
+
 
     }
     public function select_for_dashboard(Request $request){
         $search=$request['search'] ?? "";
             //search
         if($search!==""){
-            $user = model_signup::where('fullname','LIKE',"%$search%")->orwhere('username','LIKE',"%$search%")->get(); 
-            $book=model_book::where('name','LIKE',"%$search%")->get(); 
-            $doctors=model_doctor::where('name','LIKE',"%$search%")->get(); 
-            $service = model_service::where('service','LIKE',"%$search%")->get(); 
+            $user = model_signup::where('fullname','LIKE',"%$search%")->orwhere('username','LIKE',"%$search%")->get();
+            $book=model_book::where('name','LIKE',"%$search%")->get();
+            $doctors=model_doctor::where('name','LIKE',"%$search%")->get();
+            $service = model_service::where('service','LIKE',"%$search%")->get();
         }
         //normal
         else{
@@ -99,12 +99,12 @@ public function admin_login(Request $request){
            $doctors=model_doctor::orderBy('d_id','desc')->take(3)->get();
            $service = model_service::orderBy('s_id','desc')->take(3)->get();
         }
-       
-       
+
+
 
 
         $data=compact('user','book','doctors','service');
-      
+
         return view('admin/admin_dashboard')->with($data);
 
     }
@@ -119,41 +119,41 @@ public function admin_login(Request $request){
         $search=$request['search'] ?? "";
         //search
         if($search!==""){
-            $select_data=model_book::where('name','LIKE',"%$search%")->paginate(7); 
+            $select_data=model_book::where('name','LIKE',"%$search%")->paginate(7);
         }else{
             $select_data=model_book::orderBy('b_id', 'desc')->paginate(7);
 
         }
-        
-      
 
 
-        
+
+
+
         $data=compact('select_data');
-      
+
         return view('admin/view_appoinment')->with($data);
 
     }
-   
+
 
     public function status($b_id)
     {
         // Find the book by its ID
         $book = model_book::find($b_id);
-    
+
         // If the book is found
         if ($book) {
             // Toggle the status
             $book->status = $book->status ? 0 : 1;
-    
+
             // Save the changes to the book
             $book->save();
-    
+
             // If the status changed to approved
             if ($book->status) {
                 // Get the user associated with the book
                 $user = model_signup::find($book->u_id);
-    
+
                 // If the user is found
                 if ($user) {
                     // Send a notification to the user
@@ -167,16 +167,16 @@ public function admin_login(Request $request){
             // Handle the case where the book is not found
             // You can log an error or show a message to the user
         }
-    
+
         // Redirect back to the previous page
         return back();
     }
-    
- 
+
+
 
 //   public function remove_user($u_id){
 //     $user=model_signup::find($u_id)->delete();
-   
+
 
 //     return back();
 //   }
