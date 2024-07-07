@@ -64,7 +64,10 @@ public function select_doctor_info_for_userdashboard(Request $request){
         // $service_id = $request->input('s_id');
 
         // Assuming you have a 'service_id' column in your 'doctors' table
-        $doctors = model_doctor::all();
+        $doctors = model_doctor::
+        leftjoin('average_rating','doctor.d_id',"=",'average_rating.doctor_id')
+        ->select('doctor.*','average_rating.average_rating')
+        ->get();
         if ($doctors->isEmpty()) {
             return response()->json([
                 'result' => 'error',
@@ -80,7 +83,8 @@ public function select_doctor_info_for_userdashboard(Request $request){
                 'specialist' => $doctor->specialist,
                 'experiance' => $doctor->experiance,
                 'qualification' => $doctor->qualification,
-                'image' => url('storage/uploads/' . $doctor->image)
+                'image' => url('storage/uploads/' . $doctor->image),
+                'rating_value'=>$doctor->average_rating ?:0
             ];
         }
 

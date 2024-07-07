@@ -37,8 +37,14 @@ class service_dashboard_controller extends Controller
         try {
             $service_id = $request->input('s_id');
 
+
+
+
             // Assuming you have a 'service_id' column in your 'doctors' table
-            $doctors = model_doctor::whereJsonContains('service_id', $service_id)->get();
+            $doctors = model_doctor::whereJsonContains('service_id', $service_id)
+            ->leftjoin('average_rating','doctor.d_id',"=",'average_rating.doctor_id')
+            ->select('doctor.*','average_rating.average_rating')
+            ->get();
             if ($doctors->isEmpty()) {
                 return response()->json([
                     'result' => 'error',
@@ -54,7 +60,8 @@ class service_dashboard_controller extends Controller
                     'specialist' => $doctor->specialist,
                     'experiance' => $doctor->experiance,
                     'qualification' => $doctor->qualification,
-                    'image' => url('storage/uploads/' . $doctor->image)
+                    'image' => url('storage/uploads/' . $doctor->image),
+                    'rating_value'=>$doctor->average_rating ?:0
                 ];
             }
 
