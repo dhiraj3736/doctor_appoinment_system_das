@@ -4,6 +4,7 @@ use App\Http\Controllers\mlogin;
 use App\Http\Controllers\mobile_app\averagingaRating_controller;
 use App\Http\Controllers\mobile_app\book_controller;
 use App\Http\Controllers\mobile_app\doctor_profile_controller;
+use App\Http\Controllers\mobile_app\schedule_controller;
 use App\Http\Controllers\mobile_app\service_dashboard_controller;
 use App\Http\Controllers\mobile_app\userdashboard_controller;
 use Illuminate\Http\Request;
@@ -54,6 +55,16 @@ Route::post('saveAverageRating',[averagingaRating_controller::class,'saveAverage
 
 Route::post('saveAppoinment',[book_controller::class,'saveAppoinment']);
 
+Route::post('EditAppoinment',[book_controller::class,'EditAppoinment']);
+
+Route::post('select_doctor_info',[book_controller::class,'select_doctor_info']);
+
+
+
+Route::post('get_upcoming_schedule',[schedule_controller::class,'get_upcoming_schedule']);
+Route::post('get_completed_schedule',[schedule_controller::class,'get_completed_schedule']);
+
+
 
 // cd /path/to/your/android/project
 // git init
@@ -61,3 +72,4 @@ Route::post('saveAppoinment',[book_controller::class,'saveAppoinment']);
 // git add .
 // git commit -m "Initial commit"
 // git push -u origin main
+
