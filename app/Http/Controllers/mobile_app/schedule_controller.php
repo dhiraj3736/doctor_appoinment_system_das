@@ -41,7 +41,8 @@ class schedule_controller extends Controller
             'time' => $data->time,
             'reason'=> $data->reason,
             'b_id'=> $data->b_id,
-            'd_id'=>$data->d_id
+            'd_id'=>$data->d_id,
+            'status'=>$data->status
         ];
     }
 
@@ -85,7 +86,8 @@ public function get_completed_schedule(Request $request)
             'time' => $data->time,
             'reason'=> $data->reason,
             'b_id'=> $data->b_id,
-            'd_id'=>$data->d_id
+            'd_id'=>$data->d_id,
+            'status'=>$data->status
         ];
     }
 
