@@ -4,6 +4,8 @@ use App\Http\Controllers\mlogin;
 use App\Http\Controllers\mobile_app\averagingaRating_controller;
 use App\Http\Controllers\mobile_app\book_controller;
 use App\Http\Controllers\mobile_app\doctor_profile_controller;
+use App\Http\Controllers\mobile_app\esewa_controller;
+use App\Http\Controllers\mobile_app\notification_controller;
 use App\Http\Controllers\mobile_app\schedule_controller;
 use App\Http\Controllers\mobile_app\service_dashboard_controller;
 use App\Http\Controllers\mobile_app\userdashboard_controller;
@@ -63,6 +65,14 @@ Route::post('select_doctor_info',[book_controller::class,'select_doctor_info']);
 
 Route::post('get_upcoming_schedule',[schedule_controller::class,'get_upcoming_schedule']);
 Route::post('get_completed_schedule',[schedule_controller::class,'get_completed_schedule']);
+
+Route::post('insert_payment',[esewa_controller::class,'insert_payment']);
+
+
+
+
+Route::post('getnotification',[notification_controller::class,'getnotification']);
+Route::post('markAsRead',[notification_controller::class,'markAsRead']);
 
 
 

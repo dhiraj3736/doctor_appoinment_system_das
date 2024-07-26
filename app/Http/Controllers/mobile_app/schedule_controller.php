@@ -15,7 +15,7 @@ class schedule_controller extends Controller
     $u_id = $request->input('u_id');
 
     $book = model_book::join('doctor', 'book.doctor', '=', 'doctor.name')
-        ->select('book.*', 'doctor.specialist', 'doctor.image', 'doctor.d_id')
+        ->select('book.*', 'doctor.specialist', 'doctor.image', 'doctor.d_id','doctor.price')
         ->where('book.u_id', '=', $u_id)
         ->where('book.date', '>=', Carbon::now()->format('Y-m-d'))
         ->orderBy('book.date', 'desc')
@@ -42,7 +42,9 @@ class schedule_controller extends Controller
             'reason'=> $data->reason,
             'b_id'=> $data->b_id,
             'd_id'=>$data->d_id,
-            'status'=>$data->status
+            'status'=>$data->status,
+            'price'=>$data->price
+
         ];
     }
 
@@ -60,7 +62,7 @@ public function get_completed_schedule(Request $request)
     $u_id = $request->input('u_id');
 
     $book = model_book::join('doctor', 'book.doctor', '=', 'doctor.name')
-        ->select('book.*', 'doctor.specialist', 'doctor.image','doctor.d_id')
+        ->select('book.*', 'doctor.specialist', 'doctor.image','doctor.d_id','doctor.price')
         ->where('book.u_id', '=', $u_id)
         ->where('book.date', '<', Carbon::now()->format('Y-m-d'))
         ->orderBy('book.date', 'desc')
@@ -87,7 +89,8 @@ public function get_completed_schedule(Request $request)
             'reason'=> $data->reason,
             'b_id'=> $data->b_id,
             'd_id'=>$data->d_id,
-            'status'=>$data->status
+            'status'=>$data->status,
+            'price'=>$data->price
         ];
     }
 

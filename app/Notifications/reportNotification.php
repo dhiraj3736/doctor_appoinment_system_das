@@ -13,11 +13,12 @@ class reportNotification extends Notification
 
     /**
      * Create a new notification instance.
-     */
+     */public $doctor_name;
     public $b_id;
-    public function __construct($b_id)
+    public function __construct($b_id,$doctor_name)
     {
         $this->b_id=$b_id;
+        $this->doctor_name=$doctor_name;
     }
 
     /**
@@ -49,7 +50,8 @@ class reportNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'b_id'=>$this->b_id
+            'b_id'=>$this->b_id,
+            'doctor'=> $this->doctor_name
         ];
     }
 }

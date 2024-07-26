@@ -39,7 +39,17 @@
                         <div class="form-group">
                             <label for="exampl">Experience</label>
                             <input type="text" name="expe" value="{{isset($edit) ? $edit->nmc_no : old('nmc')}}" class="form-control" id="">
-                        </div><br>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampl">Consulting Fees</label>
+                            <input type="text" name="price" value="{{isset($edit) ? $edit->price : old('price')}}" class="form-control" id="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampl">Description</label>
+                            <input type="text" name="description" value="{{isset($edit) ? $edit->description : old('description')}}" class="form-control" id="">
+                        </div>
 
                         <div class="form-group row">
                             <label for="fromTime" class="col-sm-2 col-form-label">From:</label>

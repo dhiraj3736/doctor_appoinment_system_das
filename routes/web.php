@@ -4,6 +4,7 @@ use App\Http\Controllers\admin_controller;
 use App\Http\Controllers\book_controller;
 use App\Http\Controllers\doctor_controller;
 use App\Http\Controllers\ForgetPasswordController;
+use App\Http\Controllers\mobile_app\khalti_controller;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\payment_controller;
 use App\Http\Controllers\register_controller;
@@ -241,5 +242,7 @@ Route::middleware(['web'])->group(function () {
 
     route::post('/doctorprofile/edit',[vendor_controller::class,'edit_doctor_info']);
     route::post('/doctorprofile/change_password',[vendor_controller::class,'change_password']);
+
+    Route::post('/payment-detail', [khalti_controller::class, 'paymentDetail']);
 
 });

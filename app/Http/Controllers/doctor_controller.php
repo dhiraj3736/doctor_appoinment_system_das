@@ -37,6 +37,10 @@ class doctor_controller extends Controller
 
             $input->qualification = $request->input('qual');
             $input->experiance = $request->input('expe');
+            $input->price = $request->input('price');
+            $input->description = $request->input('description');
+
+
             $input->fromtime=$request->input('fromtime');
             $input->totime=$request->input('totime');
             $input->service_id = json_encode($request->input('services'));
@@ -96,6 +100,8 @@ class doctor_controller extends Controller
             $doctor->specialist = $request['spec'];
             $doctor->qualification = $request['qual'];
             $doctor->experiance = $request['expe'];
+            $doctor->price = $request->input('price');
+            $doctor->description = $request->input('description');
             $doctor->service_id = json_encode($request->input('services'));
 
             $doctor->fromtime=$request['fromtime'];

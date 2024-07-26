@@ -19,10 +19,10 @@
 
                 <form action="{{ route('payment_process') }}" method="POST">
                     @csrf
-                    <input type="hidden" name="amount" value="{{ $service->price }}">
-                    <input type="hidden" name="return_url" value="{{ route('successpayment') }}">
-                    <input type="hidden" name="purchase_order_id" value="{{ $uuidString }}">
-                    <input type="hidden" name="book_id" value="{{$book->b_id}}">
+                    <input type="text" name="amount" value="{{ $service->price }}">
+                    <input type="text" name="return_url" value="{{ route('successpayment') }}">
+                    <input type="text" name="purchase_order_id" value="{{ $uuidString }}">
+                    <input type="text" name="book_id" value="{{$book->b_id}}">
 
                     <input type="submit" value="Pay with Khalti" class="btn btn-primary">
                 </form>

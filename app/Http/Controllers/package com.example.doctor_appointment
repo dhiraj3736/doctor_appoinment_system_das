@@ -1,0 +1,78 @@
+package com.example.doctor_appointment
+
+import android.os.Bundle
+import android.util.Log
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import com.khalti.checkout.Khalti
+import com.khalti.checkout.data.Environment
+import com.khalti.checkout.data.KhaltiPayConfig
+
+class KhaltiPayment : AppCompatActivity() {
+
+    var doctorID: String? = null
+    var selectedDate: String? = null
+    var selectedTimeSlot: String? = null
+    var Reason: String? = null
+    var b_id: String? = null
+    var status: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_payment) // Replace with your actual layout
+
+        Log.d("KhaltiPayment", "onCreate called")
+
+        // Retrieve data from the Intent
+        doctorID = intent.getStringExtra("doctorID")
+        selectedDate = intent.getStringExtra("selectedDate")
+        selectedTimeSlot = intent.getStringExtra("selectedTimeSlot")
+        Reason = intent.getStringExtra("reason")
+        b_id = intent.getStringExtra("b_id")
+        status = intent.getStringExtra("status")
+
+        Log.d("KhaltiPayment", "b_id: ${b_id ?: "Not provided"}")
+
+        // Set up the payment button
+        val paymentButton: Button = findViewById(R.id.paymentbtn)
+        paymentButton.setOnClickListener {
+            initializeKhaltiPayment()
+        }
+    }
+
+    private fun initializeKhaltiPayment() {
+        val publicKey = "fVXSaIRXXJSq3NXx8NaW40M3osX6J0nRm4WWQ8nd4F1AhzlRVBSqwg3UKs66tEtx"
+        b_id?.let { pidx ->
+            val config = KhaltiPayConfig(
+                    publicKey = publicKey,
+                    pidx = pidx,
+                    environment = Environment.TEST // Change to Environment.Prod for production
+            )
+
+            val khalti = Khalti.init(
+                    this,
+                    config,
+                    onPaymentResult = { paymentResult, khalti ->
+                        // Handle payment result
+                        Log.d("KhaltiPayment", "Payment Result: ${paymentResult.status}")
+                    },
+                    onMessage = { payload, khalti ->
+                        // Handle messages
+                        Log.d("KhaltiPayment", "Message: ${payload.message}")
+                        if (payload.needsPaymentConfirmation) {
+                            khalti.verify()
+                        }
+                    },
+                    onReturn = { khalti ->
+                        // Optional: handle return URL load success
+                        Log.d("KhaltiPayment", "Return URL loaded")
+                    }
+            )
+
+            // Open the payment page
+            khalti.open()
+        } ?: run {
+            Log.e("KhaltiPayment", "b_id is null, cannot initialize payment")
+        }
+    }
+}

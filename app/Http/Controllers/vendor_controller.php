@@ -17,9 +17,9 @@ class vendor_controller extends Controller
     public function view_d_appoinment(){
         return view('Doctor/view_d_appoinment');
     }
-    
+
     public function select_appoinment(Request $request){
-     
+
         $search=$request['search'] ?? "";
         if($search!==""){
             $select_item=model_book::where('name','LIKE',"%$search%")->paginate(7);
@@ -27,10 +27,10 @@ class vendor_controller extends Controller
             $select_item=model_book::orderBy('b_id','desc')->paginate(7);
 
         }
-      
+
         $doctor_info=model_doctor::all();
         $data=compact('select_item','doctor_info');
-      
+
         return view('Doctor/view_d_appoinment')->with($data);
 
     }
@@ -42,21 +42,21 @@ class vendor_controller extends Controller
         $v_id=session('v_id');
         $search=$request['search'] ?? "";
         if($search!==""){
-            $user = doctor_v_model::find($v_id); 
+            $user = doctor_v_model::find($v_id);
             $name=$user->name;
             $select_item=model_book::where('doctor',$name)->where('name','LIKE',"%$search%")->paginate(7);
 
         }else{
-            $user = doctor_v_model::find($v_id); 
+            $user = doctor_v_model::find($v_id);
             $name=$user->name;
             $select_item=model_book::where('doctor',$name)->orderBy('b_id','desc')->paginate(7);
         }
-      
+
 
         $doctor_info=model_doctor::all();
         $report=model_report::all();
         $data=compact('select_item','user','doctor_info','report');
-      
+
         return view('Doctor/view_my_appoinment')->with($data);
 
     }
@@ -64,13 +64,15 @@ class vendor_controller extends Controller
 public function send_report(Request $request){
     $report=new model_report();
 
-   
+
     $report->report=$request['report'];
     $report->u_id=$request['u_id'];
     $report->b_id=$request['b_id'];
     $report->save();
+    $book=model_book::find( $report->b_id );
+
     $user=model_signup::find($report->u_id);
-    Notification::send($user, new reportNotification($report->b_id));
+    Notification::send($user, new reportNotification($report->b_id,$book->doctor));
 
 
     return back()->with('message', ' information updated successfully.');
@@ -78,17 +80,17 @@ public function send_report(Request $request){
 
 }
 
-   
+
 
     public function view_user(){
         return view('Doctor/view_d_user');
     }
 
     public function select_user(Request $request){
-        
-        $search=$request['search'] ?? ""; 
+
+        $search=$request['search'] ?? "";
         if($search !== ""){
-            $select_data=model_signup::where('fullname','LIKE',"%$search%")->orwhere('username','LIKE',"%$search%")->paginate(7); 
+            $select_data=model_signup::where('fullname','LIKE',"%$search%")->orwhere('username','LIKE',"%$search%")->paginate(7);
 
         }else{
             $select_data=model_signup::orderBy('u_id','desc')->paginate(7);
@@ -101,13 +103,13 @@ public function send_report(Request $request){
     }
 
    public function get_notification() {
- 
-    $doctor_info=model_doctor::all(); 
+
+    $doctor_info=model_doctor::all();
     return view('Doctor/doctor_dashboard ', ['doctor_info'=>$doctor_info]);
 }
 
 public function run_doctor_profile(){
-    
+
     return view('Doctor/doctorprofile');
 }
 
@@ -118,7 +120,7 @@ public function add_profile_picture(Request $request){
         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Assuming maximum file size is 2048 KB (2 MB)
     ]);
     $v_id=session('v_id');
-    $doctor =doctor_v_model::find($v_id); 
+    $doctor =doctor_v_model::find($v_id);
     $name=$doctor->name;
     $input=model_doctor::where('name',$name)->first();
 
@@ -131,7 +133,7 @@ public function add_profile_picture(Request $request){
         $request->file('image')->storeAs('public/uploads', $filename);
 
         // Save other form data along with the filename
-      
+
 
         $input->image = $filename;
         $input->save();
@@ -143,11 +145,11 @@ public function add_profile_picture(Request $request){
         return redirect()->back()->with('error', 'Failed to upload image.');
     }
 }
-    
+
 
 public function send_doctor_info(){
     $v_id=session('v_id');
-    $user = doctor_v_model::find($v_id); 
+    $user = doctor_v_model::find($v_id);
 
     $doctor_info=model_doctor::all();
     $data=compact('user','doctor_info');
@@ -167,17 +169,17 @@ public function doctor_dashboard(){
 public function edit_doctor_info(Request $request){
     $v_id=session('v_id');
     $user = doctor_v_model::find($v_id);
-    $dname=$user->name; 
+    $dname=$user->name;
 
     $doctor_info = model_doctor::where('name', $dname)->first();
-    
+
     $doctor_info->nmc_no = $request['nmc'];
     $doctor_info->specialist = $request['spec'];
     $doctor_info->qualification = $request['qual'];
     $doctor_info->experiance = $request['expe'];
     $doctor_info->fromtime=$request['fromtime'];
     $doctor_info->totime=$request['totime'];
-    
+
     $doctor_info->save();
 
     return back()->with('success', ' information updated successfully.');
@@ -207,7 +209,7 @@ public function change_password(Request $request) {
         // Update the password
         $doctor->Password = $newPassword;
         $doctor->save();
-        
+
 
         return redirect()->back()->with('message', 'Password changed successfully.');
     } else {
@@ -217,10 +219,10 @@ public function change_password(Request $request) {
 
 
 }
-    
-    
 
 
 
-    
+
+
+
 
