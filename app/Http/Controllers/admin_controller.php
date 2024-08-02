@@ -157,7 +157,7 @@ public function admin_login(Request $request){
                 // If the user is found
                 if ($user) {
                     // Send a notification to the user
-                    Notification::send($user, new Booknotification($book->name));
+                    Notification::send($user, new Booknotification($book->name,null,$b_id));
                 } else {
                     // Handle the case where the user is not found
                     // You can log an error or show a message to the user

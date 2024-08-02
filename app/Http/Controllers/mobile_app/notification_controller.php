@@ -38,6 +38,7 @@ class notification_controller extends Controller
                 $notificationList[] = [
                     'name' => $notification->data['name'] ?? 1,
                     'doctor' => $notification->data['doctor'] ?? 1,
+                    'b_id'=> $notification->data['b_id'] ?? 2,
                     'date' => $notification->created_at,
                     'notification_id' => $notification->id,
                     'read_at' => $notification->read_at ?? "read",

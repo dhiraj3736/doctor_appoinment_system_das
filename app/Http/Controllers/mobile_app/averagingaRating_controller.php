@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\model_averagrRating;
 use App\Models\model_feedback;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class averagingaRating_controller extends Controller
 {
@@ -49,7 +50,7 @@ class averagingaRating_controller extends Controller
         if ($ratingUpdate) {
             // Update existing entry
             $ratingUpdate->average_rating = $validatedData['average_rating'];
-            $ratingUpdate->number_of_reviews=$request['numberOfReviews'];  // Update number of reviews if necessary
+            $ratingUpdate->number_of_reviews = $request['numberOfReviews'];  // Update number of reviews if necessary
             $ratingUpdate->save();
             $message = 'Average rating updated successfully.';
             $averageRating = $ratingUpdate->average_rating;
@@ -58,7 +59,7 @@ class averagingaRating_controller extends Controller
             $rating = new model_averagrRating();
             $rating->doctor_id = $validatedData['doctor_id'];
             $rating->average_rating = $validatedData['average_rating'];
-            $ratingUpdate->number_of_reviews=$request['numberOfReviews']; // Initialize the number of reviews
+            $rating->number_of_reviews = $request['numberOfReviews']; // Initialize the number of reviews
             $rating->save();
             $message = 'Average rating inserted successfully.';
             $averageRating = $rating->average_rating;
@@ -69,6 +70,55 @@ class averagingaRating_controller extends Controller
             'average_rating' => $averageRating
         ]);
     }
+
+    public function topRated()
+    {
+        // Join doctor details with their ratings
+        $doctors = DB::table('average_rating')
+            ->join('doctor', 'average_rating.doctor_id', '=', 'doctor.d_id')
+            ->select('doctor.*', 'average_rating.average_rating', 'average_rating.number_of_reviews')
+            ->get();
+
+        if ($doctors->isEmpty()) {
+            return response()->json(['message' => 'No doctor ratings found'], 404);
+        }
+
+        // Calculate mean rating (C)
+        $C = $doctors->avg('average_rating');
+
+        // Minimum number of reviews required (m)
+        $m = 0; // Adjust as needed
+
+        // Calculate weighted ratings
+        foreach ($doctors as $doctor) {
+            $v = $doctor->number_of_reviews;
+            $R = $doctor->average_rating;
+            $doctor->weighted_rating = ($R * $v + $C * $m) / ($v + $m);
+        }
+
+        // Sort doctors by weighted rating and get the top 4 doctors
+        $topDoctors = $doctors->sortByDesc('weighted_rating')->take(4);
+
+        $doctorData = [];
+        foreach ($topDoctors as $doctor) {
+            $doctorData[] = [
+                'd_id' => $doctor->d_id,
+                'name' => $doctor->name,
+                'specialist' => $doctor->specialist,
+                'experiance' => $doctor->experiance,
+                'qualification' => $doctor->qualification,
+                'image' => url('storage/uploads/' . $doctor->image),
+                'rating_value' => $doctor->average_rating ?: 0
+            ];
+        }
+
+        return response()->json([
+            'result' => 'success',
+            'data1' => $doctorData,
+        ]);
+    }
+
+
 }
 
 

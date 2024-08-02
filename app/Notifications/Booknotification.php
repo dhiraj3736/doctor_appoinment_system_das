@@ -16,10 +16,14 @@ class Booknotification extends Notification
      */
     public $name;
     public $doctor;
-    public function __construct($name,$doctor=null)
+
+    public $b_id;
+    public function __construct($name,$doctor=null,$b_id=null)
     {
         $this->name=$name;
+
         $this->doctor=$doctor;
+        $this->b_id=$b_id;
     }
 
     /**
@@ -52,7 +56,8 @@ class Booknotification extends Notification
     {
         return [
             'name'=>$this->name,
-            'doctor'=>$this->doctor
+            'doctor'=>$this->doctor,
+            'b_id'=>$this->b_id
         ];
     }
 }

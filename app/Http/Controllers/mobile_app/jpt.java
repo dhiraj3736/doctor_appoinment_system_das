@@ -1274,3 +1274,122 @@ public class AddBasicInfoProperties extends Fragment {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+android {
+    namespace 'com.example.doctor_appointment'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.example.doctor_appointment"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    viewBinding {
+        enabled = true
+    }
+
+    dependencies {
+        implementation(files("libs/eSewaPaymentSdk-release.aar"))
+        implementation("com.squareup.okhttp3:okhttp:4.9.1")
+        implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+        implementation 'androidx.appcompat:appcompat:1.4.1'
+        implementation 'com.google.android.material:material:1.9.0'
+        implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+        testImplementation 'junit:junit:4.13.2'
+        androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+        androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+        implementation 'com.android.volley:volley:1.2.1'
+        implementation 'com.github.bumptech.glide:glide:4.12.0'
+        annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+        implementation 'androidx.recyclerview:recyclerview:1.2.1'
+        implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.10"
+        implementation "com.khalti:checkout-android:0.06.00"
+        implementation 'androidx.databinding:viewbinding:7.0.0'
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+
+
+
+}
+
+
+
+sk-proj-Mhda57qNBP5CPqLxSRN9T3BlbkFJkxg5NAnq8f70rZJ1O3Si
+
+sk-proj-yrJeaJZnuDvb8OudpZkwT3BlbkFJSsF4yqt4F4Tk73SfYCX6
+
+
+sk-proj-fpN5Ri11nG5QUaS3efmzT3BlbkFJXu04k7EFulAXdWAn397p
+
+sk-None-Iv6nR4N1YjAnjvX0Qa5iT3BlbkFJha8myOlUe0Zmht8TxypD
+
+AIzaSyC47FUDFMSQa0k8ENClX7nGMX1DEFNkS0w
+
+sk-None-EzUqDujIag7GGHxcs2xXT3BlbkFJQKIcOxwpgGv9gHDYvFOZ
+
+sk-svcacct-2mO1b532gww2UYx9Lg7oT3BlbkFJsXWMs8UCBA9jIvVNb63a
+
+sk-proj-tflpvMYfV8Ah69yke1BZT3BlbkFJ8fNtieOsF2bDZjAEQuXb
+
+sk-proj-lqxaaTHVM7I7XGQweCenT3BlbkFJuMoGq2DwAtSyNW4rvH3y
+sk-proj-BHadsyxyuSLElK2mIFe7T3BlbkFJEIbLMzh86hzuv3kMdCvq

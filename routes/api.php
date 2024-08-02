@@ -5,6 +5,7 @@ use App\Http\Controllers\mobile_app\averagingaRating_controller;
 use App\Http\Controllers\mobile_app\book_controller;
 use App\Http\Controllers\mobile_app\doctor_profile_controller;
 use App\Http\Controllers\mobile_app\esewa_controller;
+use App\Http\Controllers\mobile_app\khalti_controller;
 use App\Http\Controllers\mobile_app\notification_controller;
 use App\Http\Controllers\mobile_app\schedule_controller;
 use App\Http\Controllers\mobile_app\service_dashboard_controller;
@@ -55,6 +56,8 @@ Route::post('getAvailableTimeSlots', [book_controller::class, 'getAvailableTimeS
 Route::post('retrieveRatingsByDoctorId',[averagingaRating_controller::class,'retrieveRatingsByDoctorId']);
 Route::post('saveAverageRating',[averagingaRating_controller::class,'saveAverageRating']);
 
+Route::post('topRated',[averagingaRating_controller::class,'topRated']);
+
 Route::post('saveAppoinment',[book_controller::class,'saveAppoinment']);
 
 Route::post('EditAppoinment',[book_controller::class,'EditAppoinment']);
@@ -66,8 +69,10 @@ Route::post('select_doctor_info',[book_controller::class,'select_doctor_info']);
 Route::post('get_upcoming_schedule',[schedule_controller::class,'get_upcoming_schedule']);
 Route::post('get_completed_schedule',[schedule_controller::class,'get_completed_schedule']);
 
+
 Route::post('insert_payment',[esewa_controller::class,'insert_payment']);
 
+Route::post('get_booking_info',[khalti_controller::class,'get_booking_info']);
 
 
 

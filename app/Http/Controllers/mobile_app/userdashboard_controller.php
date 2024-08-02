@@ -102,5 +102,4 @@ public function select_doctor_info_for_userdashboard(Request $request){
 }
 
 
-
 }
