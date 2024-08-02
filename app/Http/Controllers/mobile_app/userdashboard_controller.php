@@ -61,13 +61,12 @@ public function select_service(){
 
 public function select_doctor_info_for_userdashboard(Request $request){
     try {
-        // $service_id = $request->input('s_id');
-
         // Assuming you have a 'service_id' column in your 'doctors' table
         $doctors = model_doctor::
         leftjoin('average_rating','doctor.d_id',"=",'average_rating.doctor_id')
-        ->select('doctor.*','average_rating.average_rating')
+        ->select('doctor.*', 'average_rating.average_rating')
         ->get();
+
         if ($doctors->isEmpty()) {
             return response()->json([
                 'result' => 'error',
@@ -75,16 +74,19 @@ public function select_doctor_info_for_userdashboard(Request $request){
             ], 404);
         }
 
+        // Shuffle doctors and take the top 4
+        $doctors = $doctors->shuffle()->take(4);
+
         $doctorData = [];
         foreach ($doctors as $doctor) {
             $doctorData[] = [
-                'd_id'=>$doctor->d_id,
+                'd_id' => $doctor->d_id,
                 'name' => $doctor->name,
                 'specialist' => $doctor->specialist,
                 'experiance' => $doctor->experiance,
                 'qualification' => $doctor->qualification,
                 'image' => url('storage/uploads/' . $doctor->image),
-                'rating_value'=>$doctor->average_rating ?:0
+                'rating_value' => $doctor->average_rating ?: 0
             ];
         }
 
@@ -100,6 +102,8 @@ public function select_doctor_info_for_userdashboard(Request $request){
         ], 500);
     }
 }
+
+
 
 
 }

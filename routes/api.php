@@ -41,6 +41,8 @@ Route::post('Service_info',[service_dashboard_controller::class,'select_service_
 Route::post('doctor_info',[service_dashboard_controller::class,'select_doctor_info']);
 Route::post('doctor_info_for_userdashboard',[userdashboard_controller::class,'select_doctor_info_for_userdashboard']);
 
+Route::post('doctor_info_for_doctor_list',[doctor_profile_controller::class,'doctor_info_for_doctor_list']);
+
 
 Route::post('doctor_info_for_profile',[doctor_profile_controller::class,'select_doctor_info_for_profile']);
 Route::post('service_name_for_fragment',[doctor_profile_controller::class,'select_service_name_for_profile']);
@@ -88,3 +90,6 @@ Route::post('markAsRead',[notification_controller::class,'markAsRead']);
 // git commit -m "Initial commit"
 // git push -u origin main
 
+
+
+// Weighted Rating Calculation
