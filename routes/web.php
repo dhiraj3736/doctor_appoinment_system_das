@@ -187,6 +187,23 @@ Route::middleware(['web'])->group(function () {
 
 
     route::get('/view_doctor', [book_controller::class, 'retrive_doctor_info']);
+    route::get('/doctorProfile/{d_id}', [book_controller::class, 'run_doctorProfile']);
+
+    Route::get('/doctorProfile/{d_id}', [book_controller::class, 'getDoctorInfo'])->name('doctor.profile');
+
+// Insert Comment
+Route::post('/doctorProfile/{d_id}/comment', [book_controller::class, 'insert_comment'])->name('comments.store');
+
+// Insert Rating
+Route::post('/doctorProfile/{d_id}/rating', [book_controller::class, 'insert_rating'])->name('rating.store');
+
+// Retrieve Doctor Ratings
+Route::get('/doctor/{id}/ratings', [book_controller::class, 'retrieveRatingsByDoctorId'])->name('doctor.ratings');
+
+// Save or Update Average Rating
+Route::post('/doctor/{id}/save-average-rating', [book_controller::class, 'saveAverageRating'])->name('doctor.saveAverageRating');
+
+
     Route::get('/logout_admin', function () {
         session()->flush(); // Destroy the entire session
         return redirect('admin_login');

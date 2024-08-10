@@ -49,7 +49,7 @@ Route::post('service_name_for_fragment',[doctor_profile_controller::class,'selec
 Route::post('insert_rating',[doctor_profile_controller::class,'insert_rating']);
 
 Route::post('insert_comment',[doctor_profile_controller::class,'insert_comment']);
-Route::post('retrive_comment',[doctor_profile_controller::class,'retrive_comment']);
+Route::post('retrieve_comment',[doctor_profile_controller::class,'retrieve_comment']);
 Route::post('get_rating',[doctor_profile_controller::class,'get_rating']);
 
 Route::post('getAvailableTimeSlots', [book_controller::class, 'getAvailableTimeSlots']);

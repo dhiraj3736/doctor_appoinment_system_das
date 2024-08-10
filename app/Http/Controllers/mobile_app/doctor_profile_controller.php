@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\mobile_app;
 
 use App\Http\Controllers\Controller;
+use App\Models\comment_model;
 use App\Models\model_doctor;
 use App\Models\model_feedback;
 use App\Models\model_service;
@@ -174,33 +175,17 @@ class doctor_profile_controller extends Controller
                 'comment' => 'required|string|max:1000',
             ]);
 
-            // Check if a record already exists for the given user and doctor
-            $feedback = model_feedback::where('user_id', $request->user_id)
-                ->where('doctor_id', $request->doctor_id)
-                ->first();
+            // Insert a new comment
+            $feedback = new comment_model();
+            $feedback->user_id = $request->user_id;
+            $feedback->doctor_id = $request->doctor_id;
+            $feedback->comment = $request->comment;
+            $feedback->save();
 
-            if ($feedback) {
-                // Update the existing comment
-                $feedback->comment = $request->comment;
-                $feedback->save();
-
-                return response()->json([
-                    'result' => 'success',
-                    'message' => 'Comment updated successfully',
-                ]);
-            } else {
-                // Insert a new comment
-                $feedback = new model_feedback();
-                $feedback->user_id = $request->user_id;
-                $feedback->doctor_id = $request->doctor_id;
-                $feedback->comment = $request->comment;
-                $feedback->save();
-
-                return response()->json([
-                    'result' => 'success',
-                    'message' => 'Comment submitted successfully',
-                ]);
-            }
+            return response()->json([
+                'result' => 'success',
+                'message' => 'Comment submitted successfully',
+            ]);
         } catch (Exception $e) {
             Log::error('Failed to insert or update comment: ' . $e->getMessage());
 
@@ -212,12 +197,13 @@ class doctor_profile_controller extends Controller
     }
 
 
-    public function retrive_comment(Request $request)
+
+    public function retrieve_comment(Request $request)
     {
         $d_id = $request->doctor_id;
 
-        // Check if doctor_id exists in the model_feedback table
-        $doctorExists = model_feedback::where('doctor_id', $d_id)->exists();
+        // Check if doctor_id exists in the comment_model table
+        $doctorExists = comment_model::where('doctor_id', $d_id)->exists();
 
         if (!$doctorExists) {
             // doctor_id does not exist in the database
@@ -228,17 +214,15 @@ class doctor_profile_controller extends Controller
         }
 
         // Retrieve comments based on doctor_id
-        $comments = model_feedback::where('doctor_id', $d_id)
-            ->join('signup', 'table_feedback.user_id', '=', 'signup.u_id')
-            ->select('table_feedback.*', 'signup.fullname')
+        $comments = comment_model::where('doctor_id', $d_id)
+            ->join('signup', 'commenttable.user_id', '=', 'signup.u_id')
+            ->select('commenttable.*', 'signup.fullname')
             ->get();
 
         // Filter out comments where 'comment' column is null
         $filtered_comments = $comments->filter(function ($comment) {
             return $comment->comment !== null;
         });
-
-
 
         // Format the comments
         $formatted_comments = $filtered_comments->map(function ($comment) {

@@ -15,6 +15,9 @@ $notifications = $user->notifications;
 <!-- Include Feather Icons CSS -->
 <link href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css" rel="stylesheet">
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
 <!-- Your HTML code -->
 <!DOCTYPE html>
 <html lang="en">
@@ -93,6 +96,30 @@ $notifications = $user->notifications;
         .container {
             padding: 50px;
         }
+
+        /* Star Rating Styles */
+.rating {
+    direction: rtl;
+    display: inline-block;
+    font-size: 1.5em;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    color: #ddd;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.rating label:hover,
+.rating label:hover ~ label,
+.rating input:checked ~ label {
+    color: #f5c518;
+}
+
     </style>
 </head>
 

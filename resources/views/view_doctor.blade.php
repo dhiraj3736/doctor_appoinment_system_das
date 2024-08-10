@@ -18,11 +18,10 @@
                             <div class="card-body">
                                 <h5 class="card-title">Dr. {{$row->name}}</h5>
                                 <p class="card-text">Specialist: {{$row->specialist}}</p>
-                                
+
                             </div>
                             <div class="card-footer">
-                                <a href="#" class="btn btn-dark view-doctor" data-bs-toggle="modal" data-bs-target="#exampleModalToggle{{$row->d_id}}">View Detail</a>
-                            </div>
+<a href="/doctorProfile/{{$row->d_id}}">view</a>                            </div>
                         </div>
                     </div>
                     @endforeach
@@ -34,43 +33,7 @@
     </div>
 </div>
 
-@foreach($doctor as $row)
-<div class="modal fade" id="exampleModalToggle{{$row->d_id}}" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalToggleLabel{{$row->d_id}}"></h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row row-cols-1  ">
-                    <div class="col">
-                        <div class="card h-100" id="card2" >
-                        <img src="{{ asset('storage/uploads/'.$row->image) }}" class="card-img-top" alt="Doctor Image" style="object-fit: cover; height: 300px;">
-                            <div class="card-body">
-                                <h5 class="card-title">Dr. {{$row->name}}</h5>
-                                <p class="card-text">NMC No.: {{$row->nmc_no}}</p>
-                                <p class="card-text">Specialist: {{$row->specialist}}</p>
-                                <p class="card-text">Qualification: {{$row->qualification}}</p>
-                                <p class="card-text">Experience: {{$row->experiance}}</p>
 
-                                <p class="card-text">Available Time: {{$row->fromtime}} TO {{$row->totime}}</p>
-                                <a href="/book" class="btn btn-primary" >Book</a>
-
-                            </div>
-
-                            <div class="card-footer">
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-         
-        </div>
-    </div>
-</div>
-@endforeach
 
 
 <style>
