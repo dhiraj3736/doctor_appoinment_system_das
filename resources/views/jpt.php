@@ -907,3 +907,350 @@ class EsewaPayment : AppCompatActivity() {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@extends('layouts.main')
+
+@section('main-section')
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header text-white bg-primary">
+                    <h3 class="card-title text-center">Doctor Profile</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Display success or error messages -->
+                    @if(session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @elseif(session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
+
+                    <!-- Doctor Information -->
+                    @if(isset($doctor))
+                        <div class="row">
+                            <div class="col-md-4 text-center">
+                                <img src="{{ asset('storage/uploads/' . $doctor->image) }}" class="rounded-circle img-thumbnail mb-3" alt="Doctor Image" style="object-fit: cover; height: 200px; width: 200px;">
+                            </div>
+                            <div class="col-md-8">
+                                <h4 class="card-title text-primary">Dr. {{ $doctor->name }}</h4>
+                                <p class="card-text"><strong>NMC No.:</strong> {{ $doctor->nmc_no }}</p>
+                                <p class="card-text"><strong>Specialist:</strong> {{ $doctor->specialist }}</p>
+                                <p class="card-text"><strong>Qualification:</strong> {{ $doctor->qualification }}</p>
+                                <p class="card-text"><strong>Experience:</strong> {{ $doctor->experience }} years</p>
+                                <p class="card-text"><strong>Available Time:</strong> {{ $doctor->fromtime }} - {{ $doctor->totime }}</p>
+                                <p class="card-text"><strong>Average Rating:</strong>
+                                    <span class="badge badge-warning text-dark">{{ $averageRating ?? 'No ratings yet' }}</span>
+                                </p>
+                                <p class="card-text"><strong>Number of Reviews:</strong> {{ $numberOfReviews }}</p>
+                                <a href="/book" class="btn btn-success btn-block mt-4">Book Appointment</a>
+                            </div>
+                        </div>
+
+                        <!-- User Ratings Section -->
+                        <hr>
+                        <h5 class="text-primary mt-4">User Ratings</h5>
+                        <div class="list-group">
+                            @foreach($ratings as $rating)
+                                <div class="list-group-item">
+                                    <span class="badge badge-primary">{{ $rating }} / 5</span>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Rating Form Section -->
+                        <hr>
+                        <h5 class="text-primary mt-4">Rate This Doctor</h5>
+                        <form method="POST" action="{{ route('rating.store', $doctor->id) }}">
+                            @csrf
+                            <div class="form-group">
+                                <label for="rating">Rating</label>
+                                <div class="rating">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <input type="radio" id="rating-star{{ $i }}" name="rating" value="{{ $i }}" required>
+                                        <label for="rating-star{{ $i }}" class="star">
+                                            <i class="fas fa-star"></i>
+                                        </label>
+                                    @endfor
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Rating</button>
+                        </form>
+                    @else
+                        <p class="text-danger">Doctor information not available.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@extends('layouts.main')
+
+@section('main-section')
+<div class="container">
+    <div class="row justify-content-center">
+        @if(session('message'))
+        <div class="alert alert-success" role="alert">
+            {{ session('message') }}
+        </div>
+        @endif
+        <div class="col-md-6">
+            <h1 class="display-4" style="color: white; font-size:30px;">{{$title}}</h1>
+            <form action="{{$url}}" method="post" style="color:white;">
+                @csrf
+                <div class="container" style="background-image:url(./images/3.jpg); padding: 20px; border-radius: 10px;">
+                    <div class="mb-3">
+                        <label for="fname" class="form-label"><b>Name:</b></label>
+                        <input type="text" class="form-control" id="fname" placeholder="Enter Full name of patient" value="{{isset($select_item) ? $select_item->name : old('fname')}}" name="fname">
+                        <span class="text-danger">
+                            @error('fname')
+                            {{$message}}
+                            @enderror
+                        </span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gender" class="form-label"><b>Gender:</b></label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="female" value="female" {{ isset($select_item) ? ($select_item->gender == "female" ? "checked" : "") : (old('gender') == "female" ? "checked" : "") }}>
+                            <label class="form-check-label" for="female">Female</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="male" value="male" {{ isset($select_item) ? ($select_item->gender == "male" ? "checked" : "") : (old('gender') == "male" ? "checked" : "") }}>
+                            <label class="form-check-label" for="male">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="other" value="other" {{ isset($select_item) ? ($select_item->gender == "other" ? "checked" : "") : (old('gender') == "other" ? "checked" : "") }}>
+                            <label class="form-check-label" for="other">Other</label>
+                        </div>
+                        <span class="text-danger">
+                            @error('gender')
+                            {{$message}}
+                            @enderror
+                        </span>
+                    </div>
+                    <label><b>Email:</b></label><br>
+                    <input type="email" class="form-control" placeholder="Enter Full name of patient" value="{{isset($select_item) ? $select_item->email : old('email')}}" name="email">
+                    <span style="color:red;">
+                        @error('email')
+                        {{$message}}
+                        @enderror
+                    </span><br>
+
+                    <label><b>Address:</b></label><br>
+                    <input type="text" class="form-control" placeholder="address" value="{{isset($select_item) ? $select_item->address : old('address')}}" name="address">
+                    <span style="color:red;">
+                        @error('address')
+                        {{$message}}
+                        @enderror
+                    </span><br>
+                    <label><b>Date of Visit:</b></label><br>
+                    <input type="date" class="form-control" name="dov" value="{{isset($select_item) ? $select_item->date : old('dov')}}" onChange="getDay(this.value);" min="<?php echo date('Y-m-d'); ?>" max="<?php echo date('Y-m-d', strtotime('+7 day')); ?>">
+                    <span style="color:red;">
+                        @error('dov')
+                        {{$message}}
+                        @enderror
+                    </span><br>
+
+                    <label for="">Service:</label><br>
+                    <select name="service" class="form-control" id="cars">
+                        @foreach($service as $serviceItem)
+                        <option value="{{ $serviceItem->service }}" {{ (isset($select_item) && $select_item->service == $serviceItem->service) || old('service') == $serviceItem->service ? 'selected' : '' }}>
+                            {{ $serviceItem->service }}
+                        </option>
+                        @endforeach
+                    </select>
+                    <span style="color:red;">
+                        @error('service')
+                        {{$message}}
+                        @enderror
+                    </span><br>
+
+                    <label for="">Doctor</label>
+                    <select name="doctor" class="form-control" id="doctor">
+                        <option value="">please choose doctor</option>
+                        @foreach($doctor as $row)
+                        <option value="{{ $row->name }}" {{ (isset($select_item) && $select_item->name == $row->name) || old('doctor') == $row->name ? 'selected' : '' }}>
+                            {{ $row->name }}
+                        </option>
+                        @endforeach
+                    </select>
+                    <span style="color:red;">
+                        @error('doctor')
+                        {{$message}}
+                        @enderror
+                    </span><br>
+
+                    <label id="doctorTimeLabel"><b>Doctor Available Time</b></label><br>
+                    <span id="doctorTimeSpan"></span><br>
+
+                    <label><b>Add time</b></label>
+                    <input type="time" name="time" id="phone" class="form-control"  value="{{isset($select_item) ? $select_item->time : old('time')}}"><br>
+
+                    <label><b>Contact Number</b></label><br>
+                    <input type="text" name="number" id="phone" class="form-control" placeholder="Phone Number" value="{{isset($select_item) ? $select_item->number : old('number')}}">
+                    <span style="color:red;">
+                        @error('number')
+                        {{$message}}
+                        @enderror
+                    </span><br>
+
+                    <!-- Other form fields... -->
+                    <input type="submit" name="submit" value="Submit" class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Setup CSRF token for all AJAX requests
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        // AJAX request to fetch doctor's available time on doctor selection change
+        $('#doctor').change(function(){
+            var doctorname = $(this).val();
+            var route = "{{ route('getdoctortime', ':doctorname') }}";
+            route = route.replace(':doctorname', doctorname);
+
+            $.ajax({
+                url: route,
+                type: 'GET',
+                success: function(response) {
+                    // Update the label and span with the doctor's available time
+                    document.getElementById('doctorTimeLabel').innerText = 'Doctor Available Time (' + response.fromtime + ' to ' + response.totime + ')';
+                    document.getElementById('doctorTimeSpan').innerText = ''; // Clear any previous error message
+                },
+                error: function(xhr, status, error) {
+                    // Handle AJAX error
+                    console.error(error);
+                    document.getElementById('doctorTimeSpan').innerText = 'Error fetching doctor time';
+                }
+            });
+        });
+    });
+</script>
+@endsection
+

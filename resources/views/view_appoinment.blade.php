@@ -2,6 +2,11 @@
 
 @section('main-section')
 <div class="container text-center mt-5">
+    @if(session('message'))
+    <div class="alert alert-success" role="alert">
+        {{ session('message') }}
+    </div>
+    @endif
     <h4 class="display-4" style="color: white; font-size: 30px;">View Appointment</h4>
 </div>
 

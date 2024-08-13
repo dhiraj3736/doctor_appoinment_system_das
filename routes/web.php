@@ -67,10 +67,17 @@ Route::middleware(['web'])->group(function () {
     Route::get('/userdashboard', [signup_controller::class, 'get_notification']);
 
 
-    Route::get('/book', [book_controller::class, 'run']);
-    Route::post('/book', [book_controller::class, 'insert']);
+    Route::post('/book/{d_id}', [book_controller::class, 'insert']);
 
-    Route::get('/book', [book_controller::class, 'retrive_service']);
+
+
+    Route::get('bookAppoinment/{d_id}', [book_controller::class, 'run']);
+    Route::get('available-slots', [book_controller::class, 'getAvailableTimeSlots']);
+    Route::get('available-slots', [book_controller::class, 'getAvailableSlots']);
+
+
+
+    Route::get('/book/{d_id}', [book_controller::class, 'retrive_service']);
 
     // route::get('view_appoinment',function(){
     //     return view('view_appoinment');

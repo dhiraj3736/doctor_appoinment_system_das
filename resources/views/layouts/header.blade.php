@@ -17,6 +17,8 @@ $notifications = $user->notifications;
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <!-- Your HTML code -->
 <!DOCTYPE html>
@@ -28,8 +30,8 @@ $notifications = $user->notifications;
     <title>Bootstrap demo</title>
     <style>
         body {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-                url("{{ asset('/images/3.jpg') }}");
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.6)),
+                url("{{ asset('/images/wallpaper.avif') }}");
             background-size: cover;
             background-attachment: fixed;
         }
@@ -276,3 +278,4 @@ $notifications = $user->notifications;
     <script>
         feather.replace();
     </script>
+

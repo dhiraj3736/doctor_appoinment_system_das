@@ -14,6 +14,8 @@ use App\Models\model_service;
 use App\Models\model_signup;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\Booknotification;
+use DateInterval;
+use DateTime;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -21,46 +23,90 @@ use Illuminate\Support\Facades\Session;
 
 class book_controller extends Controller
 {
-    public function run(){
-        $url=url('/book');
-        $title="Book Appoinment";
+    public function run($d_id)
+    {
+        // Fetch the doctor data
+        $doctor = model_doctor::where('d_id', $d_id)->first();
+        if (!$doctor) {
+            return redirect()->back()->with('error', 'Doctor not found');
+        }
 
-        $data=compact('url','title');
-        return view('book')->with($data);
+        // Prepare initial data
+        $data = [
+            'url' => url('/book/{d_id}'),
+            'title' => "Book an Appointment with".$doctor->name,
+            'doctor' => $doctor,
+        ];
+
+        return view('bookAppoinment', $data);
     }
+
+        public function getAvailableSlots(Request $request)
+    {
+        $date = $request->query('date');
+        $d_id = $request->query('d_id');
+
+        $doctor = model_doctor::where('d_id', $d_id)->first();
+        if (!$doctor) {
+            return response()->json(['error' => 'Doctor not found'], 404);
+        }
+
+        $timeSlots = $this->generateTimeSlots($doctor->fromtime, $doctor->totime);
+
+        $bookedSlots = model_book::where('doctor', $doctor->name)
+            ->where('date', $date)
+            ->pluck('time')
+            ->toArray();
+
+            // dd($bookedSlots);
+        return response()->json([
+            'timeSlots' => $timeSlots,
+            'bookedSlots' => $bookedSlots
+        ]);
+    }
+
+    private function generateTimeSlots($fromtime, $totime)
+    {
+        $timeSlots = [];
+        $start = new DateTime($fromtime);
+        $end = new DateTime($totime);
+
+        while ($start < $end) {
+            $timeSlots[] = $start->format('H:i');
+            $start->add(new DateInterval('PT30M')); // Add 30 minutes
+        }
+
+        return $timeSlots;
+    }
+
+
     public function insert(Request $request)
     {
-        $request->validate([
-            'fname' => 'required',
-            'gender' => 'required',
-            'dov' => 'required|date',
-            'email' => 'required|email',
-            'address' => 'required',
-            'service' => 'required',
-            'doctor' => 'required',
-            'time' => 'required',
-            'number' => 'required'
-        ]);
+        $u_id=session('u_id');
+
+        $userInfo=model_signup::where('u_id',$u_id)->first();
+        $fullName=$userInfo['fullname'];
+        $email=$userInfo['email'];
+        $address=$userInfo['address'];
+        $number=$userInfo['number'];
 
         $input = new model_book();
-        $input->name = $request->input('fname');
-        $input->gender = $request->input('gender');
+        $input->name = $fullName;
         $input->date = $request->input('dov');
-        $input->email = $request->input('email');
-        $input->address = $request->input('address');
-        $input->service = $request->input('service');
-        $input->doctor = $request->input('doctor');
-        $input->time = $request->input('time');
-        $input->number = $request->input('number');
-        $input->u_id = session('u_id');
+        $input->email = $email;
+        $input->address = $address;
+        $input->doctor = $request->input('doctorName');
+        $input->time = $request->input('selected_time');
+        $input->number = $number;
+        $input->reason=$request->input('reason');
+        $input->u_id =$u_id;
 
         $input->save();
         $doctors = doctor_v_model::all();
         $admin=model_admin::all();
         $recipients = $doctors->merge($admin);
         Notification::send($recipients, new Booknotification($input->name,$input->doctor));
-        return redirect()->back()->with('message', 'Appointment booked successfully.');
-    }
+        return redirect('/view_appoinment')->with('message', 'Appointment booked successfully.');    }
 
 
     public function select(){
@@ -86,43 +132,54 @@ public function retrive_service(){
 
 }
 
-public function edit($b_id){
-    $url=url('/edit').'/'.$b_id;
-    $title="Update Appointment";
 
-    $service=model_service::all();
-    $select_item=model_book::find($b_id);
-    $doctor=model_doctor::all();
+public function edit($b_id) {
+    // Construct the URL for the form action
+    $url = url('/edit') . '/' . $b_id;
 
-    $data=compact('service','doctor','select_item','url','title');
-    return view('book')->with($data);
+    // Retrieve the booking record
+    $select_item = model_book::find($b_id);
+
+    // If no booking is found, redirect back with an error
+    if (!$select_item) {
+        return redirect()->back()->with('error', 'Booking not found');
+    }
+
+    // Retrieve the doctor associated with the booking using a more reliable join
+    $doctor = model_doctor::where('name', $select_item->doctor)->first();
+
+    // If the doctor is not found, handle it (optional)
+    if (!$doctor) {
+        return redirect()->back()->with('error', 'Doctor associated with this booking not found');
+    }
+
+    // Prepare the title
+    $title = "Update Appointment with " . $doctor->name;
+
+    // Pass the necessary data to the view
+    $data = compact('doctor', 'select_item', 'url', 'title');
+
+    return view('bookAppoinment')->with($data);
 }
 
 public function update(Request $request,$b_id){
-    $request->validate([
-        'fname' => 'required',
-        'gender' => 'required',
-        'dov' => 'required|date',
-        'email' => 'required|email',
-        'address' => 'required',
-        'service' => 'required',
-        'doctor' => 'required',
-        'time' => 'required',
-        'number' => 'required'
-    ]);
+
+
     $input=model_book::find($b_id);
-    $input->name=$request['fname'];
-    $input->gender=$request['gender'];
-    $input->date=$request['dov'];
-    $input->email=$request['email'];
-    $input->address=$request['address'];
-    $input->service=$request['service'];
-    $input->doctor=$request['doctor'];
-    $input->time=$request['time'];
-    $input->number=$request['number'];
+
+
+
+
+    $input->date = $request->input('dov');
+
+    $input->doctor = $request->input('doctorName');
+    $input->time = $request->input('selected_time');
+
+    $input->reason=$request->input('reason');
+
 
     $input->save();
-    return redirect('/view_appoinment');
+    return redirect('/view_appoinment')->with('message', 'Appointment update successfully.');
 
 
 
