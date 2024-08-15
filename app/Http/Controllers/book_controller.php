@@ -14,6 +14,7 @@ use App\Models\model_service;
 use App\Models\model_signup;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\Booknotification;
+use Carbon\Carbon;
 use DateInterval;
 use DateTime;
 use Exception;
@@ -82,13 +83,20 @@ class book_controller extends Controller
 
     public function insert(Request $request)
     {
-        $u_id=session('u_id');
+        // Validation
+        $request->validate([
+            'dov' => 'required|date|after_or_equal:today',  // Validating date of visit
+            'selected_time' => 'required',  // Validating time in HH:MM format
 
-        $userInfo=model_signup::where('u_id',$u_id)->first();
-        $fullName=$userInfo['fullname'];
-        $email=$userInfo['email'];
-        $address=$userInfo['address'];
-        $number=$userInfo['number'];
+            'reason' => 'nullable|string|max:255'
+        ]);
+
+        $u_id = session('u_id');
+        $userInfo = model_signup::where('u_id', $u_id)->first();
+        $fullName = $userInfo['fullname'];
+        $email = $userInfo['email'];
+        $address = $userInfo['address'];
+        $number = $userInfo['number'];
 
         $input = new model_book();
         $input->name = $fullName;
@@ -98,22 +106,50 @@ class book_controller extends Controller
         $input->doctor = $request->input('doctorName');
         $input->time = $request->input('selected_time');
         $input->number = $number;
-        $input->reason=$request->input('reason');
-        $input->u_id =$u_id;
+        $input->reason = $request->input('reason');
+        $input->u_id = $u_id;
 
         $input->save();
+
+        // Notify doctors and admins
         $doctors = doctor_v_model::all();
-        $admin=model_admin::all();
+        $admin = model_admin::all();
         $recipients = $doctors->merge($admin);
-        Notification::send($recipients, new Booknotification($input->name,$input->doctor));
-        return redirect('/view_appoinment')->with('message', 'Appointment booked successfully.');    }
+        Notification::send($recipients, new Booknotification($input->name, $input->doctor));
 
-
-    public function select(){
-        $select_item = model_book::where('u_id', session('u_id'))->orderBy('b_id','desc')->paginate(4); // Paginate the results with 4 records per page
-        $u_id=session('u_id');
-        return view('view_appoinment', compact('select_item'));
+        return redirect('/upCommingSchedule')->with('message', 'Appointment booked successfully.');
     }
+
+
+
+public function select(){
+    $select_item = model_book::where('u_id', session('u_id'))
+    ->leftJoin('doctor', 'doctor.name', '=', 'book.doctor') // Assuming 'doctor' is the table name
+    ->select('doctor.*', 'book.*')
+    ->whereRaw("CONCAT(book.date, ' ', book.time) >= ?", [\Carbon\Carbon::now()])
+    ->orderBy('b_id', 'desc')
+    ->paginate(4);
+
+
+
+
+    return view('upCommingSchedule', compact('select_item'));
+}
+
+public function selectCompletedSchedule(){
+    $select_item = model_book::where('u_id', session('u_id'))
+    ->leftJoin('doctor', 'doctor.name', '=', 'book.doctor') // Assuming 'doctor' is the table name
+    ->select('doctor.*', 'book.*')
+    ->whereRaw("CONCAT(book.date, ' ', book.time) < ?", [\Carbon\Carbon::now()])
+    ->orderBy('b_id', 'desc')
+    ->paginate(4);
+
+
+
+
+    return view('completedSchedule', compact('select_item'));
+}
+
 
 public function delete($b_id){
     $del=model_book::find($b_id)->delete();
@@ -179,7 +215,7 @@ public function update(Request $request,$b_id){
 
 
     $input->save();
-    return redirect('/view_appoinment')->with('message', 'Appointment update successfully.');
+    return redirect('/upCommingSchedule')->with('message', 'Appointment update successfully.');
 
 
 
@@ -204,6 +240,17 @@ public function view_service(){
     $service=model_service::all();
     $data=compact('service','user');
     return view('view_service')->with($data);
+}
+
+public function serviceDoctor(Request $request,$s_id){
+
+    $service=model_service::find($s_id);
+    $doctors = model_doctor::whereJsonContains('service_id', $s_id)
+            ->leftjoin('average_rating','doctor.d_id',"=",'average_rating.doctor_id')
+            ->select('doctor.*','average_rating.average_rating')
+            ->get();
+    $data=compact('service','doctors');
+    return view('/serviceDoctor')->with($data);
 }
 
 public function run_doctor(){

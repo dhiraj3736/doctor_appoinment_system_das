@@ -157,11 +157,13 @@ $notifications = $user->notifications;
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ Request::is('book', 'view_appoinment') ? 'active' : '' }} no-caret"
                             href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Book
+                            View Appoinment
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/book">Book</a></li>
-                            <li><a class="dropdown-item" href="/view_appoinment">View Appointment</a></li>
+
+                            <li><a class="dropdown-item" href="/upCommingSchedule">Up Comming Schedule</a></li>
+                            <li><a class="dropdown-item" href="/completedSchedule">Completed Schedule</a></li>
+
                             <li><a class="dropdown-item" href="/view_report">View Report</a></li>
 
                         </ul>
@@ -170,43 +172,54 @@ $notifications = $user->notifications;
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle no-caret" href="#" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="./images/qqqq.png" alt="">
+                            <img src="/images/qqqq.png" alt="Notifications" class="rounded-circle" style="width: 25px; height: 25px;">
+                            <span class="badge bg-danger position-absolute top-1 start-100 translate-middle">{{ $user->unreadNotifications->count() }}</span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            @foreach ($user->Notifications as $notification)
-                                @if (isset($notification->data['name']))
-                                    <a class="dropdown-item {{ $notification->read_at ? '' : 'bg-warning text-light' }}"
-                                        href="/view_appointment"
-                                        onclick="event.preventDefault(); document.getElementById('mark-as-read-{{ $notification->id }}').submit();">
-                                        Hello, {{ $notification->data['name'] }} your appointment is Approved
-                                    </a>
-                                    <form id="mark-as-read-{{ $notification->id }}"
-                                        action="{{ route('notifications.markAsRead', $notification->id) }}"
-                                        method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                    <!-- Add hidden input to store notification ID -->
-                                    <input type="hidden" name="notification_id" value="{{ $notification->id }}">
-                                @elseif(isset($notification->data['b_id']))
-                                    <a class="dropdown-item {{ $notification->read_at ? '' : 'bg-warning text-light' }}"
-                                        href="/view_report"
-                                        onclick="event.preventDefault(); document.getElementById('mark-as-read-{{ $notification->id }}').submit();">
-                                        New report added by doctor
-                                    </a>
-                                    <form id="mark-as-read-{{ $notification->id }}"
-                                        action="{{ route('notifications.markAsRead', $notification->id) }}"
-                                        method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                    <!-- Add hidden input to store notification ID -->
-                                    <input type="hidden" name="notification_id" value="{{ $notification->id }}">
-                                @endif
-                            @endforeach
+                        <div class="dropdown-menu dropdown-menu-end p-0 shadow-lg rounded-lg" style="width: 400px;">
+                            <div class="dropdown-header text-white text-center py-2" style="background-color: #726d6d">
+                                Notifications
+                            </div>
+                            <div class="dropdown-divider m-0"></div>
+                            <div class="list-group">
+                                @foreach ($user->notifications as $notification)
+                                    @if (isset($notification->data['name']))
+                                        <a class="list-group-item list-group-item-action {{ $notification->read_at ? '' : 'bg-warning text-light' }}"
+                                            href="/view_appointment"
+                                            onclick="event.preventDefault(); document.getElementById('mark-as-read-{{ $notification->id }}').submit();">
+                                            <div class="d-flex flex-column">
+                                                <span class="text-wrap text-break" style="max-width: 100%;">
+                                                    Hello, {{ $notification->data['name'] }} your appointment is Approved
+                                                </span>
+                                                <small class="text-muted mt-1">{{ $notification->created_at->diffForHumans() }}</small>
+                                            </div>
+                                        </a>
+                                        <form id="mark-as-read-{{ $notification->id }}"
+                                            action="{{ route('notifications.markAsRead', $notification->id) }}"
+                                            method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+                                    @elseif(isset($notification->data['b_id']))
+                                        <a class="list-group-item list-group-item-action {{ $notification->read_at ? '' : 'bg-warning text-light' }}"
+                                            href="/view_report"
+                                            onclick="event.preventDefault(); document.getElementById('mark-as-read-{{ $notification->id }}').submit();">
+                                            <div class="d-flex flex-column">
+                                                <span class="text-wrap text-break" style="max-width: 100%;">
+                                                    New report added by doctor</span>
+                                                    <small class="text-muted mt-1">{{ $notification->created_at->diffForHumans() }}</small>
+                                                </div>
+                                        </a>
+                                        <form id="mark-as-read-{{ $notification->id }}"
+                                            action="{{ route('notifications.markAsRead', $notification->id) }}"
+                                            method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+                                    @endif
+                                @endforeach
+                            </div>
+
                         </div>
-
-
-
                     </li>
+
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"

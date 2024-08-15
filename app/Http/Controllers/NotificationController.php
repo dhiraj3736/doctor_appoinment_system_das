@@ -23,7 +23,7 @@ class NotificationController extends Controller
                 $notification = $user->notifications()->find($notificationId);
                 if ($notification && isset($notification->data['name'])) {
                     $notification->markAsRead();
-                    return redirect('view_appoinment');
+                    return redirect('upCommingSchedule');
                 } elseif($notification && isset($notification->data['b_id'])) {
                     $notification->markAsRead();
                     return redirect('view_report');                }

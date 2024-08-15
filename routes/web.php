@@ -82,7 +82,9 @@ Route::middleware(['web'])->group(function () {
     // route::get('view_appoinment',function(){
     //     return view('view_appoinment');
     // });
-    route::get('view_appoinment', [book_controller::class, 'select'])->name('view_appoinment');
+    route::get('upCommingSchedule', [book_controller::class, 'select'])->name('upCommingSchedule');
+    route::get('completedSchedule', [book_controller::class, 'selectCompletedSchedule'])->name('completedSchedule');
+
     route::get('successpayment', [payment_controller::class, 'successpayment'])->name('successpayment');
 
     route::get('payment/{b_id}', [payment_controller::class, 'run_payment'])->name('payment');
@@ -118,6 +120,10 @@ Route::middleware(['web'])->group(function () {
     route::get('/view_service', [book_controller::class, 'run_service']);
 
     route::get('/view_service', [book_controller::class, 'view_service']);
+
+    route::get('/serviceDoctor/{s_id}', [book_controller::class, 'serviceDoctor']);
+
+    // route::get('/serviceDoctor',[book_controller::class,'serviceDoctor']);
 
 
 

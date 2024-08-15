@@ -32,10 +32,7 @@
                     <label for="exampleInputPassword1">Description</label>
                     <textarea class="form-control" name="description" placeholder="Enter Description">{{ isset($edit) ? $edit->discription : old('description') }}</textarea>
                 </div>
-                <div class="form-group">
-                    <label for="Service">Price</label>
-                    <input type="text" class="form-control" value="{{isset($edit) ? $edit->price : old('price')}}" name="price" placeholder="Enter Price">
-                </div>
+
                 <div class="form-group">
                     <label for="exampleInputFile">Add service image</label>
                     <div class="input-group">
@@ -71,7 +68,7 @@
 
                                 <th class="pt-0">Service Name</th>
                                 <th class="pt-0" style="width: 40%;">Discription</th>
-                                <th class="pt-0">Price</th>
+
                                 <th class="pt-0">Action</th>
 
                             </tr>
@@ -83,7 +80,7 @@
 
                                 <td>{{$row->service}}</td>
                                 <td>{{$row->discription}}</td>
-                                <td>{{$row->price}}</td>
+
                                 <td><a href="delete_service/{{$row->s_id}}" class="badge bg-danger">Delete</a></td>
                                 <td><a href="edit_service/{{$row->s_id}}" class="badge bg-primary">Edit</a></td>
 

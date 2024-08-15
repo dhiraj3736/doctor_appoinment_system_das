@@ -1,40 +1,30 @@
-
-
 @extends('layouts.main')
 
 @section('main-section')
 
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-lg-7 col-xl-8">
-            <div class="card card-primary border border-dark" style="background-color: rgba(255, 255, 255, 0.8);">
-                <div class="card-header bg-dark text-white">
-                    <h3 class="card-title">Available Services</h3>
+        <div class="col-lg-8 col-xl-9">
+            <div class="card shadow-sm border-light">
+                <div class="card-header bg-secondary text-white">
+                    <h3 class="card-title">Report</h3>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover mb-0" style="background-color: rgba(255, 255, 255, 0.8);">
-                        <thead class="bg-dark text-white">
-                            <tr>
+                <div class="card-body">
+                    @foreach($rep as $result)
+                        <div class="mb-4 p-3 border rounded bg-light">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
 
-                                <th scope="col">Date of Visit</th>
-                                <th scope="col">Service</th>
-                                <th scope="col">Doctor</th>
-                                <th scope="col">Report</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($rep as $result)
-                <tr>
-                    <td>{{ $result->created_at }}</td>
-                    <td>{{ $result->service }}</td>
-                    <td>{{ $result->doctor }}</td>
-                    <td>{{ $result->report }}</td>
-                </tr>
-                @endforeach
-                        </tbody>
-                    </table>
-                    </div>
+                                <span class="badge bg-secondary">{{ $result->created_at->format('d M Y') }}</span>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Doctor:</strong> {{ $result->doctor }}
+                            </div>
+                            <div>
+                                <strong>Report:</strong> {{ $result->report }}
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
