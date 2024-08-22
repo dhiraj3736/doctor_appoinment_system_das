@@ -152,6 +152,7 @@ class book_controller extends Controller
                 'name' => $doctor->name,
                 'specialist' => $doctor->specialist,
                 'nmc_no' => $doctor->nmc_no,
+                'price'=>$doctor->price,
                 'image' => url('storage/uploads/' . $doctor->image),
             ]);
 

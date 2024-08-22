@@ -8,6 +8,7 @@ use App\Http\Controllers\mobile_app\esewa_controller;
 use App\Http\Controllers\mobile_app\khalti_controller;
 use App\Http\Controllers\mobile_app\notification_controller;
 use App\Http\Controllers\mobile_app\schedule_controller;
+use App\Http\Controllers\mobile_app\seacrhController;
 use App\Http\Controllers\mobile_app\service_dashboard_controller;
 use App\Http\Controllers\mobile_app\userdashboard_controller;
 use Illuminate\Http\Request;
@@ -80,6 +81,9 @@ Route::post('get_booking_info',[khalti_controller::class,'get_booking_info']);
 
 Route::post('getnotification',[notification_controller::class,'getnotification']);
 Route::post('markAsRead',[notification_controller::class,'markAsRead']);
+
+Route::post('select_doctor_info_for_search',[seacrhController::class,'select_doctor_info_for_search']);
+
 
 
 
