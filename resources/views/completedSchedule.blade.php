@@ -7,7 +7,7 @@
         {{ session('message') }}
     </div>
     @endif
-    <h2 class="text-uppercase" style="color: #ced6dd; font-size: 2.5rem; letter-spacing: 1px;">Upcoming Schedule</h2>
+    <h2 class="text-uppercase" style="color: #ced6dd; font-size: 2.5rem; letter-spacing: 1px;">Completed Schedule</h2>
     <p style="color: #7f8c8d; font-size: 1.2rem;">Manage your appointments efficiently</p>
 </div>
 

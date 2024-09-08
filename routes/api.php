@@ -5,12 +5,14 @@ use App\Http\Controllers\mobile_app\averagingaRating_controller;
 use App\Http\Controllers\mobile_app\book_controller;
 use App\Http\Controllers\mobile_app\doctor_profile_controller;
 use App\Http\Controllers\mobile_app\esewa_controller;
+use App\Http\Controllers\mobile_app\forgetPasswordController;
 use App\Http\Controllers\mobile_app\khalti_controller;
 use App\Http\Controllers\mobile_app\notification_controller;
 use App\Http\Controllers\mobile_app\schedule_controller;
 use App\Http\Controllers\mobile_app\seacrhController;
 use App\Http\Controllers\mobile_app\service_dashboard_controller;
 use App\Http\Controllers\mobile_app\userdashboard_controller;
+use App\Http\Controllers\mobile_app\userProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\signup_controller;
@@ -85,6 +87,10 @@ Route::post('markAsRead',[notification_controller::class,'markAsRead']);
 Route::post('select_doctor_info_for_search',[seacrhController::class,'select_doctor_info_for_search']);
 
 
+Route::post('select_user_info_for_profile',[userProfileController::class,'select_user_info_for_profile']);
+
+
+Route::post('forgetpasswordpost',[forgetPasswordController::class,'forgetpasswordpost']);
 
 
 // cd /path/to/your/android/project
