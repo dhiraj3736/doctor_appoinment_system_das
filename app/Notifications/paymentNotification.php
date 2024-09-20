@@ -16,11 +16,11 @@ class paymentNotification extends Notification
      */
 
      public $name;
-     public $service;
-    public function __construct($service,$name)
+     public $doctor;
+    public function __construct($doctor,$name)
     {
         $this->name=$name;
-        $this->service=$service;
+        $this->doctor=$doctor;
     }
 
     /**
@@ -53,7 +53,7 @@ class paymentNotification extends Notification
     {
         return [
             'user_name'=>$this->name,
-            'service'=>$this->service
+            'doctor'=>$this->doctor
         ];
     }
 }

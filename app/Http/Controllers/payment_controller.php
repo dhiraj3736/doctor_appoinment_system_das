@@ -128,15 +128,16 @@ class payment_controller extends Controller
         $book_id=$request->query('purchase_order_name');
 
         $payment=model_book::find($book_id);
-        $payment->payment=$amount;
+        $payment->payment=$amount/100;
         $payment->status=2;
         $payment->save();
 
         $name=$payment->name;
-        $service=$payment->service;
+        $doctor=$payment->doctor;
+
         $admin=model_admin::all();
 
-        Notification::send($admin, new paymentNotification($service,$name));
+        Notification::send($admin, new paymentNotification($doctor,$name));
 
         // Mail::to($input->email)->send(new RegisterMail($input));
 

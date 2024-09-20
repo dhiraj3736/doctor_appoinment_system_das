@@ -226,7 +226,7 @@ License: For each use you must have a valid license purchased only from above li
                                             </script>
                                         </div>
                                         @endif
-                                        @if(isset($notification->data['user_name']) && isset($notification->data['service']))
+                                        @if(isset($notification->data['user_name']) && isset($notification->data['doctor']))
                                         <div class="p-1">
                                             <!-- Display the notification message and link -->
                                             <a href="" class="dropdown-item d-flex align-items-center py-2">
@@ -235,7 +235,7 @@ License: For each use you must have a valid license purchased only from above li
                                                     <i class="icon-sm text-white" data-feather="plus"></i>
                                                 </div>
                                                 <div class="flex-grow-1 me-2">
-                                                    <p>{{ $notification->data['user_name'] }},pay for {{$notification->data['service']}}</p>
+                                                    <p>{{ $notification->data['user_name'] }},pay for {{$notification->data['doctor']}}</p>
                                                     <p class="tx-12 text-muted">30 min ago</p>
                                                 </div>
                                             </a>

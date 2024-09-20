@@ -30,14 +30,17 @@ class signup_controller extends Controller
         $request->validate(
             [
                 'fullname' => 'required',
-                'gender' => 'required',
-                'username' => 'required',
-                'password' => 'required',
 
-                'password-confirmation' => 'required|same:password',
+
+                'password' => [
+                    'required',
+                    'min:8', // At least 8 characters
+                    'regex:/[!@#$%^&*(),.?":{}|<>]/' // At least one special character
+                ],
+
                 'address' => 'required',
                 'number' => 'required',
-                'email' => 'required'
+                'email' => 'required|email|unique:signup,email',
 
 
             ]
@@ -45,8 +48,8 @@ class signup_controller extends Controller
         $input = new model_signup();
 
         $input->fullname = $request['fullname'];
-        $input->gender = $request['gender'];
-        $input->username = $request['username'];
+
+
 
         $input->password = md5($request['password']);
         $input->address = $request['address'];

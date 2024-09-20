@@ -99,25 +99,8 @@
                     {{$message}}
                     @enderror
                 </span>
-                <div class="inputContainer">
-                    <label class="gender">Gender</label>
-                    <input type="radio" class="g" name="gender" value="male" {{ old('gender') == 'male' ? 'checked' : '' }}> Male
-                    <input type="radio" class="g" name="gender" value="female" {{ old('gender') == 'female' ? 'checked' : '' }}> Female
-                    <input type="radio" class="g" name="gender" value="others" {{ old('gender') == 'others' ? 'checked' : '' }}> Others
-                </div>
-                <span>
-                    @error('gender')
-                    {{$message}}
-                    @enderror
-                </span>
-                <div class="inputContainer">
-                    <input type="text" name="username" class="form-control" value="{{ old('username') }}" placeholder="Username">
-                </div>
-                <span>
-                    @error('username')
-                    {{$message}}
-                    @enderror
-                </span>
+
+
                 <div class="inputContainer">
                     <input type="text" class="form-control" name="address" value="{{ old('address') }}" placeholder="Address">
                 </div>
@@ -151,14 +134,7 @@
                     {{$message}}
                     @enderror
                 </span>
-                <div class="inputContainer">
-                    <input type="password" class="form-control" name="password-confirmation" placeholder="Confirm Password">
-                </div>
-                <span>
-                    @error('password-confirmation')
-                    {{$message}}
-                    @enderror
-                </span>
+
                 <br>
                 <input type="submit" name="ok" class="btn btn-primary" value="Submit">
             </div>

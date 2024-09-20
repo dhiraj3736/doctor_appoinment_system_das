@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Mail\RegisterMail;
+use App\Models\model_admin;
 use Illuminate\Http\Request;
 use App\Models\model_signup;
+use App\Notifications\registerNotification;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log; // Import Log facade
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 
 
 class mlogin extends Controller
@@ -91,6 +95,16 @@ class mlogin extends Controller
             ], 401);
         }
 
+        if (!$user->email_verified_at) {
+            // User not found
+            return response()->json([
+                'error' => 'Email not verified',
+                'message' => 'Email not verified',
+            ], 401);
+        }
+
+
+
         if ($user->status === 0) {
             // User is suspended
             return response()->json([
@@ -119,48 +133,43 @@ class mlogin extends Controller
 
         ], 200);
     }
-
     public function insert(Request $request)
     {
-        $validatedData= $request->validate([
+        $request->validate([
             'fullname' => 'required',
-
-         'email' => 'required|',
-         'number' => 'required',
+            'email' => 'required|email|unique:signup,email', // Email must be unique in the signup table
             'password' => 'required',
-
-
-
-
+            'address' => 'required',
+            'number' => 'required',
         ]);
 
+        DB::beginTransaction();
         try {
-            // Create a new instance of model_signup
+            // Proceed with registration
             $input = new model_signup();
-            $input->fullname = $validatedData['fullname'];
-            $input->email = $validatedData['email'];
-            $input->number = $validatedData['number'];
-            $input->password = md5($validatedData['password']); // Use bcrypt for password hashing
+            $input->fullname = $request->fullname;
+            $input->email = $request->email;
+            $input->password = md5($request->password); // Use hashing or bcrypt for better security
+            $input->address = $request->address;
+            $input->number = $request->number;
             $input->remember_token = Str::random(40);
-            // Mail::to($input->email)->send(new RegisterMail($input));
-            // Save the new user to the database
+
+            // Save the user
             $input->save();
-            // Return a JSON response
-            return response()->json([
-                'result' => 'success',
-                'user' => $input
-            ]);
 
+            // Notify admin and send confirmation email
+            Notification::send(model_admin::all(), new registerNotification($input->fullname));
+            Mail::to($input->email)->send(new RegisterMail($input));
 
-        } catch (\Exception $e) {
-            // Log the error message
-            Log::error('Failed to register user: ' . $e->getMessage());
+            // Commit the transaction after all actions succeed
+            DB::commit();
 
-            // Return a failure JSON response
-            return response()->json([
-                'result' => 'failure',
-                'message' => 'Failed to register user. Please try again later.'
-            ], 500); // 500 Internal Server Error status code
+            return response()->json(['result' => 'success', 'message' => 'Registration successful'], 201); // 201 Created
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('Error during registration: '.$e->getMessage()); // Log the error
+            return response()->json(['result' => 'error', 'message' => 'Registration failed. Please try again later.'], 500); // 500 Internal Server Error
         }
     }
 }
