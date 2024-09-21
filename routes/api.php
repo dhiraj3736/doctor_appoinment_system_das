@@ -4,6 +4,7 @@ use App\Http\Controllers\mlogin;
 use App\Http\Controllers\mobile_app\averagingaRating_controller;
 use App\Http\Controllers\mobile_app\book_controller;
 use App\Http\Controllers\mobile_app\doctor_profile_controller;
+use App\Http\Controllers\mobile_app\editUserInfoController;
 use App\Http\Controllers\mobile_app\esewa_controller;
 use App\Http\Controllers\mobile_app\forgetPasswordController;
 use App\Http\Controllers\mobile_app\khalti_controller;
@@ -92,6 +93,11 @@ Route::post('select_user_info_for_profile',[userProfileController::class,'select
 
 Route::post('forgetpasswordpost',[forgetPasswordController::class,'forgetpasswordpost']);
 
+
+Route::post('select_user_info_for_editprofile',[editUserInfoController::class,'select_user_info_for_editprofile']);
+
+Route::post('saveEditInfo',[editUserInfoController::class,'saveEditInfo']);
+Route::post('saveChangePhoto',[editUserInfoController::class,'saveChangePhoto']);
 
 // cd /path/to/your/android/project
 // git init
