@@ -61,4 +61,39 @@ class forgetPasswordController extends Controller
     }
 }
 
+public function resetPasswordPost(Request $request)
+{
+    // Validate the request
+    $request->validate([
+        'currentpassword' => 'required',  // Current password is required for validation
+        'newpassword' => 'required|min:8',
+        'confirmpassword' => 'required|same:newpassword',
+    ]);
+
+    // Retrieve the user_id from the request
+    $user_id = $request->input('user_id');
+
+    // Find the user by user ID
+    $user = model_signup::where('u_id', $user_id)->first();
+
+    // Check if the current password matches the user's password
+    if ($user && $user->password == md5($request->input('currentpassword'))) {
+        // Update the password with the new one
+        $user->password = md5($request->input('newpassword'));
+        $user->save();
+
+        // Return success response
+        return response()->json([
+            'result' => 'success',
+            'message' => 'Password updated successfully'
+        ]);
+    } else {
+        // Return error response if the current password doesn't match
+        return response()->json([
+            'result' => 'error',
+            'message' => 'Current password is incorrect'
+        ], 400);
+    }
+}
+
 }

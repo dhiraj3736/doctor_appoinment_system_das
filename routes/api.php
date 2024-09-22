@@ -9,6 +9,7 @@ use App\Http\Controllers\mobile_app\esewa_controller;
 use App\Http\Controllers\mobile_app\forgetPasswordController;
 use App\Http\Controllers\mobile_app\khalti_controller;
 use App\Http\Controllers\mobile_app\notification_controller;
+use App\Http\Controllers\mobile_app\ReportController;
 use App\Http\Controllers\mobile_app\schedule_controller;
 use App\Http\Controllers\mobile_app\seacrhController;
 use App\Http\Controllers\mobile_app\service_dashboard_controller;
@@ -98,6 +99,11 @@ Route::post('select_user_info_for_editprofile',[editUserInfoController::class,'s
 
 Route::post('saveEditInfo',[editUserInfoController::class,'saveEditInfo']);
 Route::post('saveChangePhoto',[editUserInfoController::class,'saveChangePhoto']);
+
+Route::post('selectReport',[ReportController::class,'selectReport']);
+
+Route::post('resetPasswordPost',[forgetPasswordController::class,'resetPasswordPost']);
+
 
 // cd /path/to/your/android/project
 // git init

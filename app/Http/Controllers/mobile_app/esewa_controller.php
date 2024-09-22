@@ -17,5 +17,7 @@ class esewa_controller extends Controller
         $book->status= 2;
         $book->payment= $fee;
         $book->save();
+
+
     }
 }
