@@ -1,0 +1,35 @@
+Doctor Appointment System -
+ 
+User Features
+
+1.Registration & Login:
+	Users can register and log in from both the website and mobile app.
+2.User Dashboard:
+	After logging in, users enter a dashboard where they can view a list of all doctors.
+3.Doctor Interaction:
+	Users can select a specific doctor to:
+		Book an appointment based on the doctor’s availability.
+		Leave comments.
+		Rate the doctor.
+4.Appointment Notifications:
+	Users receive notifications when an appointment is approved by the admin or doctor.
+5.Payment:
+	Once an appointment is approved, users can make payments through eSewa or Khalti.
+6.Reports:
+	Users can view reports provided by the doctor after appointments.
+7.Profile Updates:
+	Users can update their personal information, such as name, booking date, photo, and other details.
+
+
+Admin Features
+
+1.View all user information.
+2.View all doctor appointments, and accept or reject appointments.
+3.Add, edit, and delete doctor profiles.
+4.Add, delete, and update services.
+
+Doctor Features
+
+1.After being added by an admin, doctors can register and log in.
+2.View appointments, and accept or reject appointments.
+3.Add reports for patients or users.
